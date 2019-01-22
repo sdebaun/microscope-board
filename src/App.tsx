@@ -1,28 +1,19 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+import { game } from './data'
+import { Route, Link } from 'react-router-dom'
 
-export default App;
+import { HomeView } from './HomeView'
+import { GameView } from './GameView'
+
+// this should be queried from apollo based on id
+const GameRoute: React.SFC<{id: string}> = ({id}) =>
+  <GameView {...{game}}/>
+
+const App: React.SFC<{}> = () =>
+<>
+  <Route exact path="/" component={HomeView}/>
+  <Route path="/game/:id" component={GameRoute}/>
+</>
+
+export default App
