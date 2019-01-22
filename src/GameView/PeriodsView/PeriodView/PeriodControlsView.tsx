@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Children } from 'react'
 import { Button, Paper, Collapse, Grow, WithStyles, withStyles, createStyles, Theme, Grid } from '@material-ui/core'
 import { Period, Event, Scene, Tone } from '../../../data'
 import styled from 'styled-components'
@@ -85,21 +85,27 @@ const PeriodName = styled.h1<{tone: Tone}>`
 //   margin-bottom: 0.5em;
 // `
 
-const ButtonBar = styled.div<{tone: Tone}>`
-  background-color: ${(props: {tone: Tone}) => props.tone === Tone.LIGHT ? 'white' : 'black'}
-`
 
 // const AddThingLink: React.SFC<{gameId: string}> = ({gameId, ...props}) => <Link {...props} to={`/game/${gameId}/add-period/>
 
-const periodControlsView: React.SFC<{period: Period, className?: string}> = ({period: {name, events, tone}, className}) =>
+type InjectedProps = {
+  addPeriod: () => void
+}
+type MutationProps = {
+  beforeSeq: number
+  children(props: InjectedProps): JSX.Element
+}
+
+const MutationAddPeriod: React.SFC<MutationProps> = ({beforeSeq, children}) =>
+  <>{children({addPeriod: () => { console.log('add child before', beforeSeq)}})}</>
+
+const periodControlsView: React.SFC<{tone: string, seq: number, className?: string}> = ({tone, seq, className}) =>
   <div {...{className}}>
-    <ButtonBar {...{tone}}>
     {/* <Link as={Button} to='/game/123/add-period'>&lt; +</Link> */}
     {/* <Button component={() => <AddThingLink gameId={'123'}/>}>&lt; +</Button> */}
-    <Button>&lt; +</Button>
-    </ButtonBar>
-    <PeriodName {...{tone}}>{name}</PeriodName>
-    {events.map((event, key) => <EventView {...{event, key}}/>)}
+    <MutationAddPeriod beforeSeq={seq}>
+      {({addPeriod}) => <Button onClick={addPeriod}>&lt; +</Button> }
+    </MutationAddPeriod>
   </div>
 
 export const PeriodControlsView = styled(periodControlsView)`

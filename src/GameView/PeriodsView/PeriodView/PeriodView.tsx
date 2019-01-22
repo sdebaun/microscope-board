@@ -91,13 +91,11 @@ const ButtonBar = styled.div<{tone: Tone}>`
 
 // const AddThingLink: React.SFC<{gameId: string}> = ({gameId, ...props}) => <Link {...props} to={`/game/${gameId}/add-period/>
 
-const periodView: React.SFC<{period: Period, className?: string}> = ({period: {name, events, tone}, className}) =>
+import { PeriodControlsView } from './PeriodControlsView'
+
+const periodView: React.SFC<{period: Period, className?: string}> = ({period: {name, events, tone, seq}, className}) =>
   <div {...{className}}>
-    <ButtonBar {...{tone}}>
-    {/* <Link as={Button} to='/game/123/add-period'>&lt; +</Link> */}
-    {/* <Button component={() => <AddThingLink gameId={'123'}/>}>&lt; +</Button> */}
-    <Button>&lt; +</Button>
-    </ButtonBar>
+    <PeriodControlsView {...{tone, seq}}/>
     <PeriodName {...{tone}}>{name}</PeriodName>
     {events.map((event, key) => <EventView {...{event, key}}/>)}
   </div>
