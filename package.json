@@ -25,7 +25,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "make200": "cp build/index.html build/200.html",
+    "deploy": "yarn make200 && surge build --domain https://msb-staging.surge.sh --project=./build",
+    "deploy:prod": "yarn make200 && surge build --domain https://msb.surge.sh --project=./build"
   },
   "eslintConfig": {
     "extends": "react-app"
