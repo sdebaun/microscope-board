@@ -41,3 +41,28 @@ const AddPeriodLink = ({beforeSeq}) =>
       </GameUIContext.Consumer>
     }
   </Mutation>
+
+design C
+
+react hooks
+
+const AddPeriodLink = ({beforeSeq}) => {
+  const {id} = useContext(GameUiContext)
+
+  return <Mutation>
+    {({addPeriod}) => addPeriod({gameId: id, seq: beforeSeq})}
+  </Mutation>
+}
+
+design D
+
+its part of the graphql query shape of Game
+
+const AddPeriodLink = ({before, period: {seq, game: {id}}}) =>
+  <Mutation>
+    {({addPeriod}) => addPeriod({gameId: id, seq: beforeSeq})}
+  </Mutation>
+
+design E
+
+only if we could hook into router context, not supported but might be hackable

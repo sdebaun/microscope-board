@@ -1,29 +1,31 @@
-import React from 'react'
-import { Paper, Collapse, Grow, WithStyles, withStyles, createStyles, Theme, Grid } from '@material-ui/core'
-import { Period, Event, Scene, Tone } from '../../../../data'
+import React, { useState } from 'react'
+import { Paper, Grow } from '@material-ui/core'
+import { Event, Scene, Tone } from '../../../../data'
 import styled from 'styled-components'
 import colors from '../../../../colors'
-import { Link, Route } from 'react-router-dom'
-// const UToneDot: React.SFC<{tone: Tone, className?: string}> = ({tone, className}) =>
-//   <svg {...{className}} viewBox="-24 -24 48 48"><circle r="24" fill="red"/></svg>
 
-// const ToneDot = styled(UToneDot)`
-//   & circle {
-//     fill: ${props => props.tone === Tone.LIGHT ? 'white' : 'black'};
-//     stroke: ${props => props.tone === Tone.LIGHT ? 'black' : 'none'}
-//   }
-// `
+const useToggle = (initialState: boolean): [boolean, (...args: any[])=>void] => {
+  const [state, setState] = useState(initialState)
+  const toggleState = () => setState(!state)
+  return [state, toggleState]
+}
 
-const sceneView: React.SFC<{scene: Scene, className?: string}> = ({scene: { question, id }, className}) =>
-  <Link to={`/game/1234/scene/${id}`} {...{className}}>
-    <div>{question}</div>
-    <Route path={`/game/1234/scene/${id}`} component={() => <Grow in={true}><div>Focus Scene</div></Grow>}/>
-  </Link>
+const sceneView: React.SFC<{scene: Scene, className?: string}> = ({scene: { question, id }, className}) => {
+  const [zoom, toggleZoom] = useToggle(false)
+
+  return <div {...{className}}>
+    <a onClick={toggleZoom} style={{display: 'block'}}>
+    {question}
+    </a>
+    { zoom && <Grow in={true}><div>Focus Scene</div></Grow>}
+  </div>
+}
 
 const SceneView = styled(sceneView)`
   display: block;
   border-right: 0.75em solid ${(props: {scene: {tone: Tone}}) => props.scene.tone === Tone.LIGHT ? 'white' : 'black'};
   font-style: italic;
+  cursor: pointer;
   color: ${colors.top.sec};
   background-color: ${colors.top.bg};
   margin: 0.5em -0.5em 0em -0.25em;
@@ -49,18 +51,22 @@ const EventFocus = styled(eventFocus)`
   border-bottom-left-radius: 0.5em;
 `
 
-const eventView: React.SFC<{event: Event, className?: string}> = ({event: { name, scenes, id }, className}) =>
-  <Paper {...{className}}>
-    <Link to={`/game/1234/event/${id}`} style={{display: 'block'}}>
+const eventView: React.SFC<{event: Event, className?: string}> = ({event: { name, scenes, id }, className}) => {
+  const [zoom, toggleZoom] = useToggle(false)
+
+  return <Paper {...{className}}>
+    <a onClick={() => toggleZoom()} style={{display: 'block'}}>
       {name}
-    </Link>
-    <Route path={`/game/1234/event/${id}`} component={() => <EventFocus/>}/>
+    </a>
+    { zoom && <EventFocus/>}
     {scenes.length > 0 ? <ScenesView {...{scenes}}/> : ''}
   </Paper>
+}
 
 export const EventView = styled(eventView)`
   padding: 0.5em;
   margin-bottom: 0.5em;
+  cursor: pointer;
   border-left: 0.5em solid ${(props: {event: {tone: Tone}}) => props.event.tone === Tone.LIGHT ? 'white' : 'black'}
   &&, && * { color: ${colors.high.pri}}
   &&, && .focus { background-color: ${colors.high.bg}; }

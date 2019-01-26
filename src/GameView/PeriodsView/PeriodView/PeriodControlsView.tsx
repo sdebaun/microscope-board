@@ -77,16 +77,6 @@ const PeriodName = styled.h1<{tone: Tone}>`
   margin: 0;
 `
 
-// const PeriodToneDot = styled(ToneDot)`
-//   height: 24px;
-//   width: 24px;
-//   display: block;
-//   margin: auto;
-//   margin-bottom: 0.5em;
-// `
-
-
-// const AddThingLink: React.SFC<{gameId: string}> = ({gameId, ...props}) => <Link {...props} to={`/game/${gameId}/add-period/>
 
 type InjectedProps = {
   addPeriod: () => void
@@ -101,8 +91,6 @@ const MutationAddPeriod: React.SFC<MutationProps> = ({beforeSeq, children}) =>
 
 const periodControlsView: React.SFC<{tone: string, seq: number, className?: string}> = ({tone, seq, className}) =>
   <div {...{className}}>
-    {/* <Link as={Button} to='/game/123/add-period'>&lt; +</Link> */}
-    {/* <Button component={() => <AddThingLink gameId={'123'}/>}>&lt; +</Button> */}
     <MutationAddPeriod beforeSeq={seq}>
       {({addPeriod}) => <Button onClick={addPeriod}>&lt; +</Button> }
     </MutationAddPeriod>

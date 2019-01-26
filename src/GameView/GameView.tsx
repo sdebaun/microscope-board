@@ -9,6 +9,7 @@ import { PeriodsView } from './PeriodsView'
 import styled from 'styled-components'
 
 import Layout, { FixedStyles, FoundationStyles, BreadthStyles, ExtraStyles } from '../Layout'
+// import {  } from 'react-router/Router'
 
 // TODO: im pretty sure theres a better way to do this, more idiomatic to styled-components
 const Control = styled(NavView)`${FixedStyles}`
