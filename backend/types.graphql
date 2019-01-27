@@ -28,7 +28,7 @@ enum Tone {
 
 type Game @model {
   id: ID! @isUnique
-  bigPicture: String
+  bigPicture: String!
   palette: Palette @relation(name: "GamePalette")
   legacies: [Legacy!]! @relation(name: "GameLegacies")
   periods: [Period!]! @relation(name: "GamePeriods")
@@ -55,7 +55,7 @@ type Palette @model {
 
 type PaletteItem @model {
   id: ID! @isUnique
-  title: String
+  title: String!
   palette: Palette! @relation(name: "PaletteItems")
   yesPalette: Palette @relation(name: "PaletteYesItems")
   noPalette: Palette @relation(name: "PaletteNoItems")
@@ -65,14 +65,14 @@ type Legacy @model {
   id: ID! @isUnique
   game: Game! @relation(name: "GameLegacies")
   player: Player! @relation(name: "PlayerLegacies")
-  title: String
+  title: String!
 }
 
 type Period @model {
   id: ID! @isUnique
-  tone: Tone
-  title: String
-  seq: Int
+  tone: Tone!
+  title: String!
+  seq: Int!
   game: Game! @relation(name: "GamePeriods")
   events: [Event!]! @relation(name: "PeriodEvents")
   creator: Player! @relation(name: "PlayerCreatedPeriods")
@@ -80,9 +80,9 @@ type Period @model {
 
 type Event @model {
   id: ID! @isUnique
-  tone: Tone
-  seq: Int
-  title: String
+  tone: Tone!
+  seq: Int!
+  title: String!
   period: Period! @relation(name: "PeriodEvents")
   scenes: [Scene!]! @relation(name: "EventScenes")
   creator: Player! @relation(name: "PlayerCreatedEvents")
@@ -90,18 +90,18 @@ type Event @model {
 
 type Focus @model{
   id: ID! @isUnique
-  title: String
+  title: String!
   focusedGame: Game @relation(name: "GameCurrentFocus")
   game: Game! @relation(name: "GameFocii")
 }
 
 type Scene @model {
   id: ID! @isUnique
-  tone: Tone
-  seq: Int
-  question: String
-  setting: String
-  answer: String
+  tone: Tone!
+  seq: Int!
+  question: String!
+  setting: String!
+  answer: String!
   event: Event! @relation(name: "EventScenes")
   creator: Player! @relation(name: "PlayerCreatedScenes")
 }

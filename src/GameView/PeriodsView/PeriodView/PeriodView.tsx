@@ -1,9 +1,10 @@
 import React from 'react'
-import { Button, Paper, Collapse, Grow, WithStyles, withStyles, createStyles, Theme, Grid } from '@material-ui/core'
-import { Period, Event, Scene, Tone } from '../../../data'
+import { GetGame_Game_periods } from '../../types/GetGame'
 import styled from 'styled-components'
 import colors from '../../../colors'
-import { Link, Route } from 'react-router-dom'
+import { PeriodControlsView } from './PeriodControlsView'
+import { Tone } from '../../../types/globalTypes';
+
 
 import { EventView } from './EventView'
 
@@ -19,13 +20,11 @@ const ButtonBar = styled.div<{tone: Tone}>`
   background-color: ${(props: {tone: Tone}) => props.tone === Tone.LIGHT ? 'white' : 'black'}
 `
 
-import { PeriodControlsView } from './PeriodControlsView'
-
-const periodView: React.SFC<{period: Period, className?: string}> = ({period: {name, events, tone, seq}, className}) =>
+const periodView: React.SFC<{period: GetGame_Game_periods, className?: string}> = ({period: {title, events, tone, seq}, className}) =>
   <div {...{className}}>
     <PeriodControlsView {...{tone, seq}}/>
-    <PeriodName {...{tone}}>{name}</PeriodName>
-    {events.map((event, key) => <EventView {...{event, key}}/>)}
+    <PeriodName {...{tone}}>{title}</PeriodName>
+    {events && events.map((event, key) => <EventView {...{event, key}}/>)}
   </div>
 
 export const PeriodView = styled(periodView)`

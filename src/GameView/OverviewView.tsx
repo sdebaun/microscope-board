@@ -1,10 +1,12 @@
 import React, { ReactSVG } from 'react'
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Paper, WithStyles, withStyles, createStyles, Theme, Typography } from '@material-ui/core'
-import { Game, Palette, Legacy, Focus } from '../data'
+import { Palette, Legacy, Focus } from '../data'
+import { GetGame_Game, GetGame_Game_palette, GetGame_Game_legacies, GetGame_Game_currentFocus } from './types/GetGame'
 import styled from 'styled-components'
 import colors from '../colors'
 
 import { Route } from 'react-router-dom'
+import { getFragmentDefinition } from 'apollo-utilities';
 
 
 const OverviewPanelTitle = styled.h2`
@@ -50,12 +52,12 @@ const OverviewPanel = styled(overviewPanel)`
   }
 `
 
-const PaletteView: React.SFC<{palette: Palette}> = ({palette}) =>
+const PaletteView: React.SFC<{palette: GetGame_Game_palette | null}> = ({palette}) =>
   <OverviewPanel title='Palette'>
     List of palette choices
   </OverviewPanel>
 
-const LegaciesView: React.SFC<{legacies: Legacy[]}> = ({legacies}) =>
+const LegaciesView: React.SFC<{legacies: GetGame_Game_legacies[] | null}> = ({legacies}) =>
   <OverviewPanel title='Legacies'>
     List of legacies
   </OverviewPanel>
@@ -80,12 +82,12 @@ const ReverseOverviewPanel = styled(OverviewPanel)`
   }
 `
 
-const CurrentFocusView: React.SFC<{currentFocus: Focus}> = ({currentFocus}) =>
+const CurrentFocusView: React.SFC<{currentFocus: GetGame_Game_currentFocus}> = ({currentFocus}) =>
   <ReverseOverviewPanel title='Current Focus'>
-    {currentFocus.title}
+    {currentFocus.id}
   </ReverseOverviewPanel>
 
-const overviewView: React.SFC<{game: Game, className?: string}> = ({game: {bigPicture, palette, legacies, currentFocus}, className}) =>
+const overviewView: React.SFC<{game: GetGame_Game, className?: string}> = ({game: {bigPicture, palette, legacies, currentFocus}, className}) =>
   <div {...{className}}>
     <BigPictureTitle>{bigPicture}</BigPictureTitle>
     <PaletteView {...{palette}}/>

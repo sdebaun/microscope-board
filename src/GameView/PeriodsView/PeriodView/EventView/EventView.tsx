@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Paper, Grow } from '@material-ui/core'
-import { Event, Scene, Tone } from '../../../../data'
+// import { Event, Scene, Tone } from '../../../../data'
 import styled from 'styled-components'
 import colors from '../../../../colors'
+import { GetGame_Game_periods_events, GetGame_Game_periods_events_scenes } from '../../../types/GetGame';
+import { Tone } from '../../../../types/globalTypes';
 
 const useToggle = (initialState: boolean): [boolean, (...args: any[])=>void] => {
   const [state, setState] = useState(initialState)
@@ -10,7 +12,7 @@ const useToggle = (initialState: boolean): [boolean, (...args: any[])=>void] => 
   return [state, toggleState]
 }
 
-const sceneView: React.SFC<{scene: Scene, className?: string}> = ({scene: { question, id }, className}) => {
+const sceneView: React.SFC<{scene: GetGame_Game_periods_events_scenes, className?: string}> = ({scene: { question, id }, className}) => {
   const [zoom, toggleZoom] = useToggle(false)
 
   return <div {...{className}}>
@@ -32,7 +34,7 @@ const SceneView = styled(sceneView)`
   padding: 0.25em;
 `
 
-const scenesView: React.SFC<{scenes: Scene[], className?: string}> = ({scenes, className}) =>
+const scenesView: React.SFC<{scenes: GetGame_Game_periods_events_scenes[], className?: string}> = ({scenes, className}) =>
   <div {...{className}}>
     {scenes.map((scene, key) => <SceneView {...{scene, key}}/>)}
   </div>
@@ -51,7 +53,7 @@ const EventFocus = styled(eventFocus)`
   border-bottom-left-radius: 0.5em;
 `
 
-const eventView: React.SFC<{event: Event, className?: string}> = ({event: { name, scenes, id }, className}) => {
+const eventView: React.SFC<{event: GetGame_Game_periods_events, className?: string}> = ({event: { title, scenes, id }, className}) => {
   const [zoom, toggleZoom] = useToggle(false)
 
   return <Paper {...{className}}>
@@ -59,7 +61,7 @@ const eventView: React.SFC<{event: Event, className?: string}> = ({event: { name
       {name}
     </a>
     { zoom && <EventFocus/>}
-    {scenes.length > 0 ? <ScenesView {...{scenes}}/> : ''}
+    {scenes && scenes.length > 0 ? <ScenesView {...{scenes}}/> : ''}
   </Paper>
 }
 

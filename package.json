@@ -36,6 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "gen": "apollo client:codegen --endpoint=https://api.graph.cool/simple/v1/cjre1ft0j65ik0122n839025k --target=typescript --globalTypesFile=./src/types/globalTypes.ts types",
+    "gen2": "apollo client:codegen --localSchemaFile=./backend/types.graphql --endpoint=https://api.graph.cool/simple/v1/cjre1ft0j65ik0122n839025k --target=typescript --globalTypesFile=./src/types/globalTypes.ts types",
     "make200": "cp build/index.html build/200.html",
     "deploy": "yarn make200 && surge build --domain https://msb-staging.surge.sh --project=./build",
     "deploy:prod": "yarn make200 && surge build --domain https://msb-prod.surge.sh --project=./build"

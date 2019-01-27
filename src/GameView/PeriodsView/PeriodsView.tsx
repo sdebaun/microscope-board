@@ -1,11 +1,12 @@
 import React from 'react'
-import { Period } from '../../data'
+// import { Period } from '../../data'
+import { GetGame_Game_periods } from '../types/GetGame'
 import { PeriodView } from './PeriodView'
 import styled from 'styled-components'
 
 import media from '../../media'
 
-const periodsView: React.SFC<{periods: Period[], className?: string}> = ({periods, className}) =>
+const periodsView: React.SFC<{periods: GetGame_Game_periods[], className?: string}> = ({periods, className}) =>
   <div {...{className}} onScroll={e => console.log('scrolled', e.currentTarget.scrollLeft, e.currentTarget.scrollWidth, e.currentTarget.clientWidth)}>
     {periods.map((period, key) => <PeriodView {...{period, key}}/>)}
   </div>

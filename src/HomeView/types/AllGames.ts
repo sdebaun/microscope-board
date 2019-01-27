@@ -8,7 +8,7 @@
 export interface AllGames_allGames {
   __typename: "Game";
   id: string;
-  bigPicture: string | null;
+  bigPicture: string;
 }
 
 export interface AllGames {
