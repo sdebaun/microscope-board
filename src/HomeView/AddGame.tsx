@@ -29,8 +29,9 @@ const AddGameForm: React.SFC = () => {
       initialValues={{bigPicture: ''}}
       onSubmit={(values, { setSubmitting }) => {
         console.log('values', values)
-        createGame({variables: values})
-        setSubmitting(false)
+        createGame({variables: values}).then(() => {
+          setSubmitting(false)
+        })
       }}
       >
       {({values, handleChange, handleBlur, handleSubmit}) => (
