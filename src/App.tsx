@@ -3,7 +3,7 @@ import React from 'react';
 import { game } from './data'
 import { Route } from 'react-router-dom'
 
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from 'react-apollo-hooks'
 import createApolloClient from './createApolloClient'
 
 import { HomeView } from './HomeView'
@@ -16,9 +16,9 @@ const GameRoute: React.SFC<{id: string}> = ({id}) =>
 const client = createApolloClient()
 
 const App: React.SFC<{}> = () =>
-<ApolloProvider {...{client}}>
-  <Route exact path="/" component={HomeView}/>
-  <Route path="/game/:id" component={GameRoute}/>
-</ApolloProvider>
+  <ApolloProvider {...{client}}>
+    <Route exact path="/" component={HomeView}/>
+    <Route path="/game/:id" component={GameRoute}/>
+  </ApolloProvider>
 
 export default App
