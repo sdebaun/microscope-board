@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { useQuery } from 'react-apollo-hooks'
 import { CircularProgress } from '@material-ui/core'
+import { AllGames, AllGames_allGames } from './types/AllGames'
 
-const GET_GAMES = gql`
+const ALL_GAMES = gql`
   query AllGames {
     allGames {
       id,
@@ -13,14 +14,14 @@ const GET_GAMES = gql`
   }
 `
 
-const GameLink: React.SFC<{game: any}> = ({game: {id, bigPicture}}) =>
+const GameLink: React.SFC<{game: AllGames_allGames}> = ({game: {id, bigPicture}}) =>
   <Link to={`/game/${id}`}>{bigPicture}</Link>
 
 const GameList: React.SFC = () => {
-  const { data } = useQuery(GET_GAMES)
-
+  const { data, error } = useQuery<AllGames>(ALL_GAMES)
+  if ( error || !data ) { return <div>Error!</div>}
   return <>
-    {data.allGames.map((game:any) => <GameLink {...{key: game.id, game}}/>)}
+    {data.allGames.map((game) => <GameLink {...{key: game.id, game}}/>)}
   </>
 }
 
