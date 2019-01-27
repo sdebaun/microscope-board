@@ -11,7 +11,6 @@ import { User } from './User'
 const Fixed = styled.div`${FixedStyles}`
 const Foundation = styled(User)`${FoundationStyles}`
 const Breadth = styled.div`${BreadthStyles}`
-const Extra = styled.div`${ExtraStyles}`
 
 export const HomeView: React.SFC<{game: Game}> = ({game}) =>
   <Layout>

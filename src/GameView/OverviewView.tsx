@@ -1,13 +1,8 @@
-import React, { ReactSVG } from 'react'
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Paper, WithStyles, withStyles, createStyles, Theme, Typography } from '@material-ui/core'
-import { Palette, Legacy, Focus } from '../data'
+import React from 'react'
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
 import { GetGame_Game, GetGame_Game_palette, GetGame_Game_legacies, GetGame_Game_currentFocus } from './types/GetGame'
 import styled from 'styled-components'
 import colors from '../colors'
-
-import { Route } from 'react-router-dom'
-import { getFragmentDefinition } from 'apollo-utilities';
-
 
 const OverviewPanelTitle = styled.h2`
   font-size: 0.9em;

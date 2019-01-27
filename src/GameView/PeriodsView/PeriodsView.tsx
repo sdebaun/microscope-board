@@ -1,5 +1,4 @@
 import React from 'react'
-// import { Period } from '../../data'
 import { GetGame_Game_periods } from '../types/GetGame'
 import { PeriodView } from './PeriodView'
 import styled from 'styled-components'

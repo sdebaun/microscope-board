@@ -1,6 +1,5 @@
 import React, {Suspense} from 'react';
 
-import { game } from './data'
 import { Route } from 'react-router-dom'
 
 import { ApolloProvider } from 'react-apollo-hooks'

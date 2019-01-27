@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Paper, Grow } from '@material-ui/core'
-// import { Event, Scene, Tone } from '../../../../data'
 import styled from 'styled-components'
 import colors from '../../../../colors'
 import { GetGame_Game_periods_events, GetGame_Game_periods_events_scenes } from '../../../types/GetGame';
