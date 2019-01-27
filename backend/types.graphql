@@ -5,7 +5,7 @@ type User @model {
   id: ID! @isUnique
   name: String
   dateOfBirth: DateTime
-
+  # games: [Game!]! @relation(name: "UserGames")
   # Uncomment below - you can declare relations between models like this
 
   # posts: [Post!]! @relation(name: "UserPosts")
@@ -34,6 +34,7 @@ type Game @model {
   periods: [Period!]! @relation(name: "GamePeriods")
   currentFocus: Focus @relation(name: "GameCurrentFocus")
   focii: [Focus!]! @relation(name: "GameFocii")
+  owner: Player! @relation(name: "PlayerGames")
 }
 
 type Player @model {
@@ -42,6 +43,7 @@ type Player @model {
   createdEvents: [Event!]! @relation(name: "PlayerCreatedEvents")
   createdLegacies: [Legacy!]! @relation(name: "PlayerLegacies")
   createdScenes: [Scene!]! @relation(name: "PlayerCreatedScenes")
+  ownedGames: [Game!]! @relation(name: "PlayerGames")
 
 }
 
