@@ -15,17 +15,14 @@ const PeriodName = styled.h1<{tone: Tone}>`
   margin: 0;
 `
 
-
-const ButtonBar = styled.div<{tone: Tone}>`
-  background-color: ${(props: {tone: Tone}) => props.tone === Tone.LIGHT ? 'white' : 'black'}
-`
-
-const periodView: React.SFC<{period: GetGame_Game_periods, className?: string}> = ({period: {title, events, tone, seq}, className}) =>
-  <div {...{className}}>
+const periodView: React.SFC<{period: GetGame_Game_periods, className?: string}> = ({period: {title, events, tone, seq}, className}) => {
+  console.log('tone', tone)
+  return <div {...{className}}>
     <PeriodControlsView {...{tone, seq}}/>
     <PeriodName {...{tone}}>{title}</PeriodName>
     {events && events.map((event, key) => <EventView {...{event, key}}/>)}
   </div>
+}
 
 export const PeriodView = styled(periodView)`
   // border-top: 0.5em solid ${(props: {period: {tone: Tone}}) => props.period.tone === Tone.LIGHT ? 'white' : 'black'}

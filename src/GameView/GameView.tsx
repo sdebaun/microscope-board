@@ -78,6 +78,7 @@ export const GameRoute: React.SFC<RouteComponentProps<{id: string}>> = ({match: 
   console.log('id', id)
   const { data, error } = useQuery<GetGame>(GET_GAME, { variables: { id }})
   if (error || !data || !data.Game) { console.log(error); console.log(data); return <div>Error!</div> }
+  console.log('game', data.Game)
   return <GameView {...{game: data.Game}}/>
 }
 

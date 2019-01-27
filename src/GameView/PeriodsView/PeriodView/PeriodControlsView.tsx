@@ -1,6 +1,5 @@
 import React, { Children } from 'react'
 import { Button, Paper, Collapse, Grow, WithStyles, withStyles, createStyles, Theme, Grid } from '@material-ui/core'
-import { Period, Event, Scene, Tone } from '../../../data'
 import styled from 'styled-components'
 import colors from '../../../colors'
 import { Link, Route } from 'react-router-dom'
@@ -69,6 +68,7 @@ import { Link, Route } from 'react-router-dom'
 // `
 
 import { EventView } from './EventView'
+import { Tone } from '../../../types/globalTypes';
 
 const PeriodName = styled.h1<{tone: Tone}>`
   font-size: 1.5em;
