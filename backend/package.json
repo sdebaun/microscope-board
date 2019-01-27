@@ -1,5 +1,12 @@
 {
   "name": "msb-backend",
   "version": "1.0.0",
-  "description": "My Graphcool Service"
+  "description": "My Graphcool Service",
+  "scripts": {
+    "gen": "cd gen && apollo client:codegen --target=typescript --endpoint=https://api.graph.cool/simple/v1/cjre1ft0j65ik0122n839025k --outputFlat ./types.ts && cd ..",
+    "gen2": "cd gen && apollo client:codegen --target=typescript --localSchemaFile=./schema.json --outputFlat ./types.ts && cd ..",
+
+    "deploy": "graphcool deploy --target staging",
+    "deploy:prod": "graphcool deploy --target prod"
+  }
 }

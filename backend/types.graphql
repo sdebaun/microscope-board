@@ -21,3 +21,87 @@ type User @model {
 #   # Every relation also required a back-relation (to determine 1:1, 1:n or n:m)
 #   author: User! @relation(name: "UserPosts")
 # }
+enum Tone {
+  LIGHT
+  DARK
+}
+
+type Game @model {
+  id: ID! @isUnique
+  bigPicture: String
+  palette: Palette @relation(name: "GamePalette")
+  legacies: [Legacy!]! @relation(name: "GameLegacies")
+  periods: [Period!]! @relation(name: "GamePeriods")
+  currentFocus: Focus @relation(name: "GameCurrentFocus")
+  focii: [Focus!]! @relation(name: "GameFocii")
+}
+
+type Player @model {
+  id: ID! @isUnique
+  createdPeriods: [Period!]! @relation(name: "PlayerCreatedPeriods")
+  createdEvents: [Event!]! @relation(name: "PlayerCreatedEvents")
+  createdLegacies: [Legacy!]! @relation(name: "PlayerLegacies")
+  createdScenes: [Scene!]! @relation(name: "PlayerCreatedScenes")
+
+}
+
+type Palette @model {
+  id: ID! @isUnique
+  game: Game! @relation(name: "GamePalette")
+  items: [PaletteItem!]! @relation(name: "PaletteItems")
+  yesItems: [PaletteItem!]! @relation(name: "PaletteYesItems")
+  noItems: [PaletteItem!]! @relation(name: "PaletteNoItems")
+}
+
+type PaletteItem @model {
+  id: ID! @isUnique
+  title: String
+  palette: Palette! @relation(name: "PaletteItems")
+  yesPalette: Palette @relation(name: "PaletteYesItems")
+  noPalette: Palette @relation(name: "PaletteNoItems")
+}
+
+type Legacy @model {
+  id: ID! @isUnique
+  game: Game! @relation(name: "GameLegacies")
+  player: Player! @relation(name: "PlayerLegacies")
+  title: String
+}
+
+type Period @model {
+  id: ID! @isUnique
+  tone: Tone
+  title: String
+  seq: Int
+  game: Game! @relation(name: "GamePeriods")
+  events: [Event!]! @relation(name: "PeriodEvents")
+  creator: Player! @relation(name: "PlayerCreatedPeriods")
+}
+
+type Event @model {
+  id: ID! @isUnique
+  tone: Tone
+  seq: Int
+  title: String
+  period: Period! @relation(name: "PeriodEvents")
+  scenes: [Scene!]! @relation(name: "EventScenes")
+  creator: Player! @relation(name: "PlayerCreatedEvents")
+}
+
+type Focus @model{
+  id: ID! @isUnique
+  title: String
+  focusedGame: Game @relation(name: "GameCurrentFocus")
+  game: Game! @relation(name: "GameFocii")
+}
+
+type Scene @model {
+  id: ID! @isUnique
+  tone: Tone
+  seq: Int
+  question: String
+  setting: String
+  answer: String
+  event: Event! @relation(name: "EventScenes")
+  creator: Player! @relation(name: "PlayerCreatedScenes")
+}

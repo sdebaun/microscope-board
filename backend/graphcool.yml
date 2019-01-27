@@ -13,7 +13,6 @@
 #
 # Happy Coding!
 
-
 # In the types.graphql you define your data schema
 types: ./types.graphql
 

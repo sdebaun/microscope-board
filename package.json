@@ -26,9 +26,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "gen": "apollo service:download --endpoint=https://api.graph.cool/simple/v1/cjre1ft0j65ik0122n839025k ./gen/schema.json",
+    "gen:ts": "apollo client:codegen --localSchemaFile=./gen/schema.json --target=typescript -- --outputFlat",
     "make200": "cp build/index.html build/200.html",
     "deploy": "yarn make200 && surge build --domain https://msb-staging.surge.sh --project=./build",
-    "deploy:prod": "yarn make200 && surge build --domain https://msb.surge.sh --project=./build"
+    "deploy:prod": "yarn make200 && surge build --domain https://msb-prod.surge.sh --project=./build"
   },
   "eslintConfig": {
     "extends": "react-app"

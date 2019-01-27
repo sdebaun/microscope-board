@@ -1,0 +1,3 @@
+targets:
+  staging: shared-us-west-2/cjre1ft0j65ik0122n839025k
+  default: staging
