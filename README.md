@@ -1,6 +1,6 @@
 # UI Org
 
-Layout: reusable components for views
+Layout: reusable components for routes and views
 Route: plucks params from route, fetches any top-level data, passes to top-level views
 View: display logic, Compositions of layouts, other views, blocks
 Block: generic, comprised of Elements
