@@ -1,15 +1,10 @@
 import React from 'react'
-import { GetGame_Game_periods } from '../types/GetGame'
 import styled from 'styled-components'
-import { Formik, FormikActions, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
 import { Button } from '@material-ui/core';
 import { useTouchGame } from '../useTouchGame';
-
-const title = styled.div`
-  background-color: gray;
-`
 
 const PanelTop = styled.div`
   background-color: #666
@@ -25,13 +20,13 @@ type AddPeriodValues = {
 
 const AddPeriodForm: React.SFC<{onSubmit: (values: AddPeriodValues) => Promise<any>}> = ({onSubmit}) =>
   <Formik<AddPeriodValues>
-    onSubmit={(values, {setSubmitting}) => {
+    onSubmit={(values, {setSubmitting, resetForm}) => {
       console.log('form', values)
-      onSubmit(values).then(() => setSubmitting(false))
+      onSubmit(values).then(() => {setSubmitting(false); resetForm()})
     }}
     initialValues={{title: ''}}
     >
-    {({values, handleChange, handleBlur, handleSubmit}) => (
+    {({values, handleChange, handleBlur, handleSubmit, submitForm}) => (
       <form onSubmit={handleSubmit}>
           <label htmlFor='title'>
             Title
@@ -41,7 +36,7 @@ const AddPeriodForm: React.SFC<{onSubmit: (values: AddPeriodValues) => Promise<a
             onChange={handleChange}
             onBlur={handleBlur}
             />
-          <Button>Create</Button>
+          <Button onClick={submitForm}>Create</Button>
       </form>
     )}
   </Formik>
@@ -85,7 +80,6 @@ export const AddPeriod: React.SFC<{seq: number, gameId: string}> = ({seq, gameId
     <PanelTop>New Period</PanelTop>
     <PanelContent>
       <AddPeriodForm {...{onSubmit}}/>
-      Add period to game {gameId} with sequence {seq}
     </PanelContent>
   </div>
   )
