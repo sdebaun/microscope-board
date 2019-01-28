@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import styled from 'styled-components'
 
-import { Tone } from '../../../types/globalTypes';
+import { Tone } from 'types/globalTypes';
 
 type InjectedProps = {
   addPeriod: () => void
