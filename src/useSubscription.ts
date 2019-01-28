@@ -1,20 +1,110 @@
 // this is being added to react-apollo-hooks but it hasnt been merged into a release yet
 
 import { DocumentNode, GraphQLError } from 'graphql'
-import { OperationVariables, FetchPolicy } from 'apollo-client'
+import ApolloClient, { OperationVariables, FetchPolicy } from 'apollo-client'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useApolloClient } from 'react-apollo-hooks'
+import { useApolloClient, useQuery } from 'react-apollo-hooks'
 import * as isEqual from 'react-fast-compare'
+import { _ModelMutationType } from './types/globalTypes';
 
 export type SubscriptionOptions<TVariables> = {
   variables?: TVariables;
   fetchPolicy?: FetchPolicy;
 }
 
+type SubResult<TNode> = {
+  mutation: _ModelMutationType
+  node: TNode | null
+  updatedFields: string[] | null;
+  previousValues: {id: string} | null;
+}
+
+type WithID = {
+  id: string
+}
+
+export const useSubscribedCollection = <TQuery, TSub, TItem extends WithID, TVariables = OperationVariables>(
+  colQuery: DocumentNode,
+  subQuery: DocumentNode,
+  colResult: ({data}: {data: TQuery}) => TItem[],
+  subResult: ({data}: {data: TSub}) => SubResult<TItem> | null,
+  writeResult: (collection: TItem[]) => {[key: string]: TItem[]}
+): TItem[] => {
+  const { data, error } = useQuery<TQuery>(colQuery)
+  if (error || !data) { throw(error) }
+  const collection = colResult({data})
+  useSubscription<TSub>(subQuery, {}, ({data, client}) => {
+    if (!data) { throw('No data from subscription') }
+    const result = subResult({data})
+    if (!result) { throw('No result from subscription') }
+    if (result.mutation == _ModelMutationType.CREATED && result.node) {
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult([...collection, result.node])
+      })
+    }
+    if (result.mutation == _ModelMutationType.DELETED && result.previousValues) {
+      const deletedId = result.previousValues.id
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult(collection.filter(g => g.id !== deletedId))
+      })
+    }
+    if (result.mutation == _ModelMutationType.UPDATED && result.node) {
+      const updateId = result.node.id
+      const newItem = result.node
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult(collection.map(g => g.id === updateId ? newItem : g))
+      })
+    }
+  })
+  return collection
+}
+
+export const useSubscribedItem = <TQuery, TSub, TItem, TVariables = OperationVariables>(
+  colQuery: DocumentNode,
+  subQuery: DocumentNode,
+  colResult: ({data}: {data: TQuery}) => TItem | null,
+  subResult: ({data}: {data: TSub}) => SubResult<TItem> | null,
+  writeResult: (item: TItem | null) => {[key: string]: TItem | null},
+  opts: {variables?: TVariables} = {}
+): TItem => {
+  const { data, error } = useQuery<TQuery>(colQuery, opts)
+  if (error || !data) { throw(error) }
+  const item = colResult({data})
+  if (!item) { throw('no item returned from selector') }
+  useSubscription<TSub>(subQuery, opts, ({data, client}) => {
+    if (!data) { throw('No data from subscription') }
+    const result = subResult({data})
+    if (!result) { throw('No result from subscription') }
+    if (result.mutation == _ModelMutationType.CREATED && result.node) {
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult(result.node),
+        variables: opts.variables
+      })
+    }
+    if (result.mutation == _ModelMutationType.DELETED && result.previousValues) {
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult(null)
+      })
+    }
+    if (result.mutation == _ModelMutationType.UPDATED && result.node) {
+      client.writeQuery({
+        query: colQuery,
+        data: writeResult(result.node)
+      })
+    }
+  })
+  return item
+}
+
 export const useSubscription = <T, TVariables = OperationVariables>(
   query: DocumentNode,
   options: SubscriptionOptions<TVariables> = {},
-  callback: ({data}: {data: T}) => void
+  callback: ({data, client}: {data: T, client: ApolloClient<object>}) => void
 ): void => {
   const prevOptions = useRef<typeof options | null>(null)
   const client = useApolloClient()
@@ -30,7 +120,7 @@ export const useSubscription = <T, TVariables = OperationVariables>(
     .subscribe({
       next: ({ data }) => {
         setData(data)
-        callback({data})
+        callback({data, client})
       },
       error: (err) => {
         setError(err)
@@ -52,11 +142,4 @@ export const useSubscription = <T, TVariables = OperationVariables>(
     error,
     loading,
   ])
-
-  // return useMemo(() => ({
-  //   data, error, loading,
-  // }),
-  // [
-  //   data, error, loading,
-  // ])
 }

@@ -4,28 +4,28 @@
 import { _ModelMutationType } from "./../../types/globalTypes";
 
 // ====================================================
-// GraphQL subscription operation: SubGame
+// GraphQL subscription operation: SubGames
 // ====================================================
 
-export interface SubGame_Game_node {
+export interface SubGames_Game_node {
   __typename: "Game";
   id: string;
   bigPicture: string;
 }
 
-export interface SubGame_Game_previousValues {
+export interface SubGames_Game_previousValues {
   __typename: "GamePreviousValues";
   id: string;
 }
 
-export interface SubGame_Game {
+export interface SubGames_Game {
   __typename: "GameSubscriptionPayload";
   mutation: _ModelMutationType;
-  node: SubGame_Game_node | null;
+  node: SubGames_Game_node | null;
   updatedFields: string[] | null;
-  previousValues: SubGame_Game_previousValues | null;
+  previousValues: SubGames_Game_previousValues | null;
 }
 
-export interface SubGame {
-  Game: SubGame_Game | null;
+export interface SubGames {
+  Game: SubGames_Game | null;
 }
