@@ -1,8 +1,11 @@
 import React from 'react'
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
-import { GetGame_Game, GetGame_Game_palette, GetGame_Game_legacies, GetGame_Game_currentFocus } from './types/GetGame'
 import styled from 'styled-components'
+
 import {colors} from 'App/Theme'
+
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
+
+import { GetGame_Game, GetGame_Game_palette, GetGame_Game_legacies, GetGame_Game_currentFocus } from './types/GetGame'
 
 const OverviewPanelTitle = styled.h2`
   font-size: 0.9em;

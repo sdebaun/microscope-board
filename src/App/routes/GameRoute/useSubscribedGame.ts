@@ -1,9 +1,8 @@
-
 import gql from 'graphql-tag'
 
-import { GetGame } from './types/GetGame'
-
 import { useSubscribedItem } from 'App/lib/useSubscription';
+
+import { GetGame } from './types/GetGame'
 import { SubGame } from './types/SubGame';
 import { GameViewGame } from './types/GameViewGame';
 

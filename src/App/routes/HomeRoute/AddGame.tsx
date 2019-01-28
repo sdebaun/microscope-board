@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Grow } from '@material-ui/core';
-import { Formik } from 'formik';
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
+import { Formik } from 'formik';
+
+import { Button, Grow } from '@material-ui/core';
 
 type AddGameValues = {
   bigPicture: string

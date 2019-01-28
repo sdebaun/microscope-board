@@ -2,12 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { useMutation } from 'react-apollo-hooks'
-import { Button } from '@material-ui/core'
-import { AllGames, AllGames_allGames } from './types/AllGames'
+
 import { useSubscribedCollection } from 'App/lib/useSubscription';
 import { _ModelMutationType } from 'App/types/globalTypes';
+
+import { AllGames, AllGames_allGames } from './types/AllGames'
 import { GameListGame } from './types/GameListGame';
 import { SubGames } from './types/SubGames';
+
+import { Button } from '@material-ui/core'
 
 const GAME_LIST_GAME = gql`
   fragment GameListGame on Game {

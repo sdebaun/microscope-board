@@ -1,5 +1,6 @@
-import { useMutation } from "react-apollo-hooks";
 import gql from "graphql-tag";
+import { useMutation } from "react-apollo-hooks";
+
 import { useGameId } from "./GameIdContext";
 
 const TOUCH_GAME = gql`

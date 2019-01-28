@@ -1,7 +1,9 @@
 import React, { Suspense } from 'react'
-import { CircularProgress } from '@material-ui/core'
-import { AddGame } from './AddGame';
 import styled from 'styled-components'
+
+import { AddGame } from './AddGame';
+
+import { CircularProgress } from '@material-ui/core'
 
 const Panel = styled.div`
   background-color: white;
