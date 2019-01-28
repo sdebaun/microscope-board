@@ -16,6 +16,7 @@ import Layout, { FixedStyles, FoundationStyles, BreadthStyles } from '../Layout'
 import { useSubscribedItem } from '../useSubscription';
 import { SubGame } from './types/SubGame';
 import { GameViewGame } from './types/GameViewGame';
+import { GameIdProvider } from './GameIdContext';
 const Control = styled(NavView)`${FixedStyles}`
 const Overview = styled(OverviewView)`${FoundationStyles}`
 const Periods = styled(PeriodsView)`${BreadthStyles}`
@@ -24,7 +25,7 @@ export const GameView: React.SFC<{game: GetGame_Game}> = ({game}) =>
   <Layout>
     <Control {...{game}}/>
     <Overview {...{game}}/>
-    <Periods {...{periods: game.periods || []}}/>
+    <Periods {...{game}}/>
   </Layout>
 
 const GAME_VIEW_GAME = gql`
@@ -94,10 +95,14 @@ export const GameRoute: React.SFC<RouteComponentProps<{id: string}>> = ({match: 
   const game = useSubscribedItem<GetGame, SubGame, GameViewGame, {id: string}>(
     GET_GAME,
     SUB_GAME,
-    ({data}) => data.Game,
-    ({data}) => data.Game,
-    (newGame) => ({Game: newGame}),
+    ({data: { Game }}) => Game,
+    ({data: { Game }}) => Game,
+    (Game) => ({Game}),
     { variables: { id } }
   )
-  return <GameView {...{game}}/>
+  return (
+    <GameIdProvider value={game.id}>
+      <GameView {...{game}}/>
+    </GameIdProvider>
+  )
 }

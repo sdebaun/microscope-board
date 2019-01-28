@@ -65,11 +65,11 @@ export const GameList: React.SFC = () => {
   const games = useSubscribedCollection<AllGames, SubGames, GameListGame>(
     ALL_GAMES,
     SUB_GAMES,
-    ({data}) => data.allGames,
-    ({data}) => data.Game,
+    ({data: {allGames}}) => allGames,
+    ({data: {Game}}) => Game,
     (allGames) => ({allGames}),
   )
-  if (games.length ==0) { return <div>You have no games!</div>}
+  if (games.length == 0) { return <div>You have no games!</div>}
   return (
     <>
       {games.map((game) => <GameItem {...{key: game.id, game}}/>)}

@@ -35,6 +35,7 @@ type Game @model {
   currentFocus: Focus @relation(name: "GameCurrentFocus")
   focii: [Focus!]! @relation(name: "GameFocii")
   owner: Player! @relation(name: "PlayerGames")
+  touch: String
 }
 
 type Player @model {

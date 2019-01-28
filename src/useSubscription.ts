@@ -12,6 +12,7 @@ export type SubscriptionOptions<TVariables> = {
   fetchPolicy?: FetchPolicy;
 }
 
+// a sub result for graph.cool auto-generated subscriptions
 type SubResult<TNode> = {
   mutation: _ModelMutationType
   node: TNode | null
@@ -88,13 +89,16 @@ export const useSubscribedItem = <TQuery, TSub, TItem, TVariables = OperationVar
     if (result.mutation == _ModelMutationType.DELETED && result.previousValues) {
       client.writeQuery({
         query: colQuery,
-        data: writeResult(null)
+        data: writeResult(null),
+        variables: opts.variables,
       })
     }
     if (result.mutation == _ModelMutationType.UPDATED && result.node) {
+      console.log('update event', result.node)
       client.writeQuery({
         query: colQuery,
-        data: writeResult(result.node)
+        data: writeResult(result.node),
+        variables: opts.variables,
       })
     }
   })

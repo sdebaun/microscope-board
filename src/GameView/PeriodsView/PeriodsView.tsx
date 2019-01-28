@@ -1,14 +1,19 @@
 import React from 'react'
-import { GetGame_Game_periods } from '../types/GetGame'
+import { GetGame_Game } from '../types/GetGame'
 import { PeriodView } from './PeriodView'
 import styled from 'styled-components'
 
 import media from '../../media'
+import { AddPeriod } from './AddPeriod'
 
-const periodsView: React.SFC<{periods: GetGame_Game_periods[], className?: string}> = ({periods, className}) =>
-  <div {...{className}} onScroll={e => console.log('scrolled', e.currentTarget.scrollLeft, e.currentTarget.scrollWidth, e.currentTarget.clientWidth)}>
-    {periods.map((period, key) => <PeriodView {...{period, key}}/>)}
-  </div>
+const periodsView: React.SFC<{game: GetGame_Game, className?: string}> = ({game: { id, periods }, className}) => {
+  return (
+    <div {...{className}} onScroll={e => console.log('scrolled', e.currentTarget.scrollLeft, e.currentTarget.scrollWidth, e.currentTarget.clientWidth)}>
+      {periods && periods.map((period, key) => <PeriodView {...{period, key}}/>)}
+      <AddPeriod gameId={id} seq={periods ? periods.length : 0}/>
+    </div>
+  )
+}
 
 export const PeriodsView = styled(periodsView)`
   padding-top: 0px;

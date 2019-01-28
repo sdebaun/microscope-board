@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
 
-type FormikValues = {
+type AddGameValues = {
   bigPicture: string
 }
 
@@ -25,7 +25,7 @@ const AddGameForm: React.SFC = () => {
   const createGame = useMutation(CREATE_GAME)
 
   return (
-    <Formik<FormikValues>
+    <Formik<AddGameValues>
       initialValues={{bigPicture: ''}}
       onSubmit={(values, { setSubmitting }) => {
         console.log('values', values)
