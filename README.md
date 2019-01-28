@@ -1,3 +1,15 @@
+# UI Org
+
+Layout: reusable components for views
+Route: plucks params from route, fetches any top-level data, passes to top-level views
+View: display logic, Compositions of layouts, other views, blocks
+Block: generic, comprised of Elements
+Element
+
+Atoms - can be nested, do not know their content
+Views - know their content, express it via Atoms wired together
+
+
 # Todo
 
 [] set up graphcool

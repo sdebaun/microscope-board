@@ -21,8 +21,8 @@ export const PeriodsView = styled(periodsView)`
   grid-gap: 10px;
   grid-template-columns: 10px;
   grid-auto-flow: column;
-  overflow-x: scroll;
-  height: 100vh;
+  // overflow-x: scroll;
+  // height: 100vh;
   grid-auto-columns: 240px;
   &:after, &:before {
     content: "";

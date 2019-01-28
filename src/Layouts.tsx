@@ -31,7 +31,7 @@ export const Header = styled.div`
   grid-area: navigation;
   background-color: ${colors.bar.bg};
   color: ${colors.bar.pri};
-  & * {
+  & > * {
     color: ${colors.bar.pri};
   }
   display: flex;
