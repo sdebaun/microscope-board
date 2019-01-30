@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { Paper, Grow } from '@material-ui/core'
 import styled from 'styled-components'
 import { colors } from 'App/Theme'
 import { GetGame_Game_periods_events, GetGame_Game_periods_events_scenes } from '../../../types/GetGame';
 import { Tone } from 'App/types/globalTypes';
+import { useToggle } from 'App/lib/useToggle';
 
-const useToggle = (initialState: boolean): [boolean, (...args: any[])=>void] => {
-  const [state, setState] = useState(initialState)
-  const toggleState = () => setState(!state)
-  return [state, toggleState]
-}
+// placeholders from material-ui
+const Paper = styled.div``
+const Grow = styled.div``
+
+// const useToggle = (initialState: boolean): [boolean, (...args: any[])=>void] => {
+//   const [state, setState] = useState(initialState)
+//   const toggleState = () => setState(!state)
+//   return [state, toggleState]
+// }
 
 const sceneView: React.SFC<{scene: GetGame_Game_periods_events_scenes, className?: string}> = ({scene: { question, id }, className}) => {
   const [zoom, toggleZoom] = useToggle(false)
@@ -18,7 +22,7 @@ const sceneView: React.SFC<{scene: GetGame_Game_periods_events_scenes, className
     <a onClick={toggleZoom} style={{display: 'block'}}>
     {question}
     </a>
-    { zoom && <Grow in={true}><div>Focus Scene</div></Grow>}
+    { zoom && <Grow><div>Focus Scene</div></Grow>}
   </div>
 }
 
@@ -41,7 +45,7 @@ const scenesView: React.SFC<{scenes: GetGame_Game_periods_events_scenes[], class
 const ScenesView = styled(scenesView)``
 
 const eventFocus: React.SFC<{className?: string}> = ({className}) =>
-  <Grow in={true}>
+  <Grow>
     <div {...{className}}>Focus Event</div>
   </Grow>
 

@@ -4,10 +4,12 @@ import './index.css';
 import App from './App/App';
 import * as serviceWorker from './serviceWorker';
 
-import { BrowserRouter as Router } from 'react-router-dom';
+// import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';
+import { history } from 'App/history'
 
 ReactDOM.render(
-  <Router>
+  <Router {...{history}}>
     <App />
   </Router>
   , document.getElementById('root')

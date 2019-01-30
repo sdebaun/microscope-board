@@ -10,7 +10,7 @@ import { AllGames, AllGames_allGames } from './types/AllGames'
 import { GameListGame } from './types/GameListGame';
 import { SubGames } from './types/SubGames';
 
-import { Button } from '@material-ui/core'
+import { Button, Segment } from 'semantic-ui-react'
 
 const GAME_LIST_GAME = gql`
   fragment GameListGame on Game {
@@ -59,7 +59,7 @@ const GameItem: React.SFC<{game: AllGames_allGames}> = ({game}) => {
   return (
     <div>
       <GameLink {...{game}}/>
-      <Button variant="contained" onClick={() => deleteGame({variables: {id: game.id}})}>delete</Button>
+      <Button onClick={() => deleteGame({variables: {id: game.id}})}>delete</Button>
     </div>
   )
 }
@@ -74,8 +74,8 @@ export const GameList: React.SFC = () => {
   )
   if (games.length == 0) { return <div>You have no games!</div>}
   return (
-    <>
+    <Segment>
       {games.map((game) => <GameItem {...{key: game.id, game}}/>)}
-    </>
+    </Segment>
   )
 }

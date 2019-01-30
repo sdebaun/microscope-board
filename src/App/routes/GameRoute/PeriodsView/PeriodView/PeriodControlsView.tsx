@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from '@material-ui/core'
+import { Button } from 'semantic-ui-react'
+
 import styled from 'styled-components'
 
 import { Tone } from 'App/types/globalTypes';

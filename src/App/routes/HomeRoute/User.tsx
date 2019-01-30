@@ -3,20 +3,18 @@ import styled from 'styled-components'
 
 import { AddGame } from './AddGame';
 
-import { CircularProgress } from '@material-ui/core'
+import { Loader, Dimmer, Segment } from 'semantic-ui-react'
 
-const Panel = styled.div`
-  background-color: white;
-`
+const SegmentLoader: React.SFC = props =>
+  <Segment><Dimmer active><Loader {...props}/></Dimmer></Segment>
 
 import { GameList } from './GameList'
-export const User: React.SFC<{className?: string}> = ({className}) =>
-  <div {...{className}}>
+
+export const User: React.SFC = () =>
+  <>
     <h1>The User</h1>
-    <Suspense fallback={<CircularProgress color='secondary'/>}>
-      <Panel>
-        <GameList/>
-        <AddGame/>
-      </Panel>
+    <Suspense fallback={<SegmentLoader />}>
+      <GameList/>
+      <AddGame/>
     </Suspense>
-  </div>
+  </>

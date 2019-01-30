@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { Formik } from 'formik';
 import { useMutation } from 'react-apollo-hooks';
 import gql from 'graphql-tag';
-import { Button } from '@material-ui/core';
+import { Button } from 'semantic-ui-react'
+
 import { useTouchGame } from '../useTouchGame';
 
 const PanelTop = styled.div`
@@ -36,7 +37,7 @@ const AddPeriodForm: React.SFC<{onSubmit: (values: AddPeriodValues) => Promise<a
             onChange={handleChange}
             onBlur={handleBlur}
             />
-          <Button onClick={submitForm}>Create</Button>
+          <Button>Create</Button>
       </form>
     )}
   </Formik>

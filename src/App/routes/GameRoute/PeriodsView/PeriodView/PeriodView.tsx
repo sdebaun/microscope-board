@@ -8,7 +8,8 @@ import { Tone } from 'App/types/globalTypes';
 
 import { EventView } from './EventView'
 import { useMutation } from 'react-apollo-hooks';
-import { Button } from '@material-ui/core';
+import { Button } from 'semantic-ui-react'
+
 import gql from 'graphql-tag';
 import { useTouchGame } from '../../useTouchGame';
 

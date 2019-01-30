@@ -3,9 +3,10 @@ import styled from 'styled-components'
 
 import {colors} from 'App/Theme'
 
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails } from '@material-ui/core'
+import { Accordion, Icon } from 'semantic-ui-react'
 
 import { GetGame_Game, GetGame_Game_palette, GetGame_Game_legacies, GetGame_Game_currentFocus } from './types/GetGame'
+import { useToggle } from 'App/lib/useToggle';
 
 const OverviewPanelTitle = styled.h2`
   font-size: 0.9em;
@@ -13,15 +14,19 @@ const OverviewPanelTitle = styled.h2`
   color: ${colors.high.sec}
 `
 
-const overviewPanel: React.SFC<{title: React.ReactNode, className?: string}> = ({title, children, className}) =>
-  <ExpansionPanel {...{className}} classes={{expanded: 'panel-expanded'}}>
-    <ExpansionPanelSummary classes={{root: 'summary-root'}}>
-      <OverviewPanelTitle>{title}</OverviewPanelTitle>
-    </ExpansionPanelSummary>
-    <ExpansionPanelDetails classes={{root: 'details-root'}}>
+const overviewPanel: React.SFC<{title: React.ReactNode, className?: string}> = ({title, children, className}) => {
+  const [active, toggleActive] = useToggle(false)
+  return (
+    <Accordion styled {...{className}} classes={{expanded: 'panel-expanded'}}>
+    <Accordion.Title {...{active}} onClick={toggleActive} classes={{root: 'summary-root'}}>
+      <OverviewPanelTitle><Icon name='dropdown'/> {title}</OverviewPanelTitle>
+    </Accordion.Title>
+    <Accordion.Content {...{active}} classes={{root: 'details-root'}}>
       {children}
-    </ExpansionPanelDetails>
-  </ExpansionPanel>
+    </Accordion.Content>
+  </Accordion>
+  )
+}
 
 const OverviewPanel = styled(overviewPanel)`
   && {

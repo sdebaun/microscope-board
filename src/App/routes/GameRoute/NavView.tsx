@@ -1,13 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import MenuIcon from '@material-ui/icons/Menu'
-
 import { GetGame_Game } from './types/GetGame'
+import { Icon } from 'semantic-ui-react';
 
 export const NavView: React.SFC<{game: GetGame_Game}> = ({game: {id}}) =>
   <>
-    <Link to='/'><ArrowBackIosIcon/></Link>
-    <div><MenuIcon/></div>
+    <Link to='/'><Icon size='big' name='angle left'/></Link>
+    <div><Icon size='big' name='settings'/></div>
   </>
