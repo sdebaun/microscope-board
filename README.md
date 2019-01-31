@@ -1,80 +1,21 @@
-# UI Org
+An assistant app for on-line play of the indie RPG "Microscope":
+http://www.lamemage.com/microscope/
 
-Layout: reusable components for routes and views
-Route: plucks params from route, fetches any top-level data, passes to top-level views
-View: display logic, Compositions of layouts, other views, blocks
-Block: generic, comprised of Elements
-Element
+I started playing this with some gamer friends on a weekly basis, we've been using Lucidchart to track our games.  Games look sort of like this:
 
-Atoms - can be nested, do not know their content
-Views - know their content, express it via Atoms wired together
+![sample microscope board in lucidchart](https://github.com/sdebaun/microscope-rpg/raw/master/sample.png)
 
+So I figured, why not an app?
 
-# Todo
+Live version at https://msb-staging.surge.sh
 
-[] set up graphcool
-[] connect to graphcool with apollo
-[] create ts typings from graphcool types
-[X] styling scene on event card
+Interesting Things
+- set up to use absolute imports so you can do things like `import foo from 'App/foo'`
+- using semantic ui and styled components
+- fun with hooks!  especially check out App/lib/useSubscription
+- a lot of initial UI design was done with static data in `App/data.tsx`.  I just switched over to 
 
+Backend Notes
 
-design A
+I started with Graphcool, a simple cloud graphql provider.  A couple frustrating bugs later, I am ready to move off of it.  Right now I'm waffling between AWS Amplify or Serverless.  Probably start with amplify because it looks dead easy, and there are no libraries that support Suspense and Hooks, and that would be fun to write.
 
-react router updates apollo-link-state
-
-const gameRoute = ({id}) =>
-  <Mutation>
-  {({updateId}) => {
-    updateId(id);
-    return <GameView>
-  }
-  </Mutation>
-
-design B
-
-react context
-
-const GameUiContext = React.createContext('gameUi')
-export const GameUIProvider = GameUiContext.Provider
-export const GameUIConsumer = GameUiContext.Consumer
-
-const gameRoute = ({id}) =>
-  <GameUIContext.Provider value={{id}}>
-    <GameQuery id={id}>
-      {({game}) => <GameView {...{game}}/>}
-    </GameQuery>
-  </GameUIContext.Provider>
-
-const AddPeriodLink = ({beforeSeq}) =>
-  <Mutation>
-    {({addPeriod}) =>
-      <GameUIContext.Consumer>
-        {({id}) => addPeriod({gameId: id, seq: beforeSeq})}
-      </GameUIContext.Consumer>
-    }
-  </Mutation>
-
-design C
-
-react hooks
-
-const AddPeriodLink = ({beforeSeq}) => {
-  const {id} = useContext(GameUiContext)
-
-  return <Mutation>
-    {({addPeriod}) => addPeriod({gameId: id, seq: beforeSeq})}
-  </Mutation>
-}
-
-design D
-
-its part of the graphql query shape of Game
-
-const AddPeriodLink = ({before, period: {seq, game: {id}}}) =>
-  <Mutation>
-    {({addPeriod}) => addPeriod({gameId: id, seq: beforeSeq})}
-  </Mutation>
-
-design E
-
-only if we could hook into router context, not supported but might be hackable
