@@ -3,7 +3,7 @@ http://www.lamemage.com/microscope/
 
 I started playing this with some gamer friends on a weekly basis, we've been using Lucidchart to track our games.  Games look sort of like this:
 
-![sample microscope board in lucidchart](https://github.com/sdebaun/microscope-rpg/blob/master/sample.png)
+![sample microscope board in lucidchart](https://github.com/sdebaun/microscope-board/raw/master/sample.png)
 
 So I figured, why not an app?
 
