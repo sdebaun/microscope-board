@@ -1,10 +1,34 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser {
+  onUpdateUser {
+    id
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser {
+  onDeleteUser {
+    id
+  }
+}
+`;
 export const onCreateGame = `subscription OnCreateGame {
   onCreateGame {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -34,9 +58,7 @@ export const onCreateGame = `subscription OnCreateGame {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -45,6 +67,7 @@ export const onCreateGame = `subscription OnCreateGame {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -52,6 +75,12 @@ export const onUpdateGame = `subscription OnUpdateGame {
   onUpdateGame {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -81,9 +110,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -92,6 +119,7 @@ export const onUpdateGame = `subscription OnUpdateGame {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -99,6 +127,12 @@ export const onDeleteGame = `subscription OnDeleteGame {
   onDeleteGame {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -128,9 +162,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -139,6 +171,7 @@ export const onDeleteGame = `subscription OnDeleteGame {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -178,13 +211,12 @@ export const onCreatePlayer = `subscription OnCreatePlayer {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -232,13 +264,12 @@ export const onUpdatePlayer = `subscription OnUpdatePlayer {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -286,13 +317,12 @@ export const onDeletePlayer = `subscription OnDeletePlayer {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -311,7 +341,9 @@ export const onCreateChange = `subscription OnCreateChange {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -326,7 +358,9 @@ export const onUpdateChange = `subscription OnUpdateChange {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -341,7 +375,9 @@ export const onDeleteChange = `subscription OnDeleteChange {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -355,7 +391,9 @@ export const onCreatePalette = `subscription OnCreatePalette {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -387,7 +425,9 @@ export const onUpdatePalette = `subscription OnUpdatePalette {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -419,7 +459,9 @@ export const onDeletePalette = `subscription OnDeletePalette {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -499,7 +541,9 @@ export const onCreateLegacy = `subscription OnCreateLegacy {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -514,7 +558,9 @@ export const onUpdateLegacy = `subscription OnUpdateLegacy {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -529,7 +575,9 @@ export const onDeleteLegacy = `subscription OnDeleteLegacy {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -547,7 +595,9 @@ export const onCreatePeriod = `subscription OnCreatePeriod {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -572,7 +622,9 @@ export const onUpdatePeriod = `subscription OnUpdatePeriod {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -597,7 +649,9 @@ export const onDeletePeriod = `subscription OnDeletePeriod {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -701,12 +755,16 @@ export const onCreateFocus = `subscription OnCreateFocus {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }
@@ -718,12 +776,16 @@ export const onUpdateFocus = `subscription OnUpdateFocus {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }
@@ -735,12 +797,16 @@ export const onDeleteFocus = `subscription OnDeleteFocus {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }

@@ -1,10 +1,35 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
+export const getUser = `query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+  }
+}
+`;
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+`;
 export const getGame = `query GetGame($id: ID!) {
   getGame(id: $id) {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -34,9 +59,7 @@ export const getGame = `query GetGame($id: ID!) {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -45,6 +68,7 @@ export const getGame = `query GetGame($id: ID!) {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -57,6 +81,12 @@ export const listGames = `query ListGames(
     items {
       id
       bigPicture
+      players {
+        items {
+          id
+        }
+        nextToken
+      }
       palette {
         id
       }
@@ -86,9 +116,7 @@ export const listGames = `query ListGames(
         }
         nextToken
       }
-      owner {
-        id
-      }
+      owner
       touch
       changes {
         items {
@@ -97,6 +125,7 @@ export const listGames = `query ListGames(
         }
         nextToken
       }
+      createdAt
     }
     nextToken
   }
@@ -138,13 +167,12 @@ export const getPlayer = `query GetPlayer($id: ID!) {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -197,13 +225,12 @@ export const listPlayers = `query ListPlayers(
         }
         nextToken
       }
-      ownedGames {
-        items {
-          id
-          bigPicture
-          touch
-        }
-        nextToken
+      game {
+        id
+        bigPicture
+        owner
+        touch
+        createdAt
       }
       createdChanges {
         items {
@@ -224,7 +251,9 @@ export const getChange = `query GetChange($id: ID!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -244,7 +273,9 @@ export const listChanges = `query ListChanges(
       game {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
       player {
         id
@@ -260,7 +291,9 @@ export const getPalette = `query GetPalette($id: ID!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -297,7 +330,9 @@ export const listPalettes = `query ListPalettes(
       game {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
       items {
         items {
@@ -370,7 +405,9 @@ export const getLegacy = `query GetLegacy($id: ID!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -390,7 +427,9 @@ export const listLegacys = `query ListLegacys(
       game {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
       player {
         id
@@ -410,7 +449,9 @@ export const getPeriod = `query GetPeriod($id: ID!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -440,7 +481,9 @@ export const listPeriods = `query ListPeriods(
       game {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
       events {
         items {
@@ -526,12 +569,16 @@ export const getFocus = `query GetFocus($id: ID!) {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }
@@ -548,12 +595,16 @@ export const listFocuss = `query ListFocuss(
       focusedGame {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
       game {
         id
         bigPicture
+        owner
         touch
+        createdAt
       }
     }
     nextToken

@@ -1,22 +1,36 @@
 /* tslint:disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateUserInput = {
+  id?: string | null,
+};
+
+export type UpdateUserInput = {
+  id: string,
+};
+
+export type DeleteUserInput = {
+  id?: string | null,
+};
+
 export type CreateGameInput = {
   id?: string | null,
   bigPicture: string,
+  owner?: string | null,
   touch?: string | null,
+  createdAt?: string | null,
   gamePaletteId?: string | null,
   gameCurrentFocusId?: string | null,
-  gameOwnerId: string,
 };
 
 export type UpdateGameInput = {
   id: string,
   bigPicture?: string | null,
+  owner?: string | null,
   touch?: string | null,
+  createdAt?: string | null,
   gamePaletteId?: string | null,
   gameCurrentFocusId?: string | null,
-  gameOwnerId?: string | null,
 };
 
 export type DeleteGameInput = {
@@ -25,10 +39,12 @@ export type DeleteGameInput = {
 
 export type CreatePlayerInput = {
   id?: string | null,
+  playerGameId: string,
 };
 
 export type UpdatePlayerInput = {
   id: string,
+  playerGameId?: string | null,
 };
 
 export type DeletePlayerInput = {
@@ -199,13 +215,11 @@ export type DeleteSceneInput = {
   id?: string | null,
 };
 
-export type ModelGameFilterInput = {
+export type ModelUserFilterInput = {
   id?: ModelIDFilterInput | null,
-  bigPicture?: ModelStringFilterInput | null,
-  touch?: ModelStringFilterInput | null,
-  and?: Array< ModelGameFilterInput | null > | null,
-  or?: Array< ModelGameFilterInput | null > | null,
-  not?: ModelGameFilterInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
 };
 
 export type ModelIDFilterInput = {
@@ -219,6 +233,17 @@ export type ModelIDFilterInput = {
   notContains?: string | null,
   between?: Array< string | null > | null,
   beginsWith?: string | null,
+};
+
+export type ModelGameFilterInput = {
+  id?: ModelIDFilterInput | null,
+  bigPicture?: ModelStringFilterInput | null,
+  owner?: ModelStringFilterInput | null,
+  touch?: ModelStringFilterInput | null,
+  createdAt?: ModelStringFilterInput | null,
+  and?: Array< ModelGameFilterInput | null > | null,
+  or?: Array< ModelGameFilterInput | null > | null,
+  not?: ModelGameFilterInput | null,
 };
 
 export type ModelStringFilterInput = {
@@ -321,6 +346,39 @@ export type ModelSceneFilterInput = {
   not?: ModelSceneFilterInput | null,
 };
 
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+};
+
+export type CreateUserMutation = {
+  createUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+};
+
+export type UpdateUserMutation = {
+  updateUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+};
+
+export type DeleteUserMutation = {
+  deleteUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
 export type CreateGameMutationVariables = {
   input: CreateGameInput,
 };
@@ -330,6 +388,14 @@ export type CreateGameMutation = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -367,10 +433,7 @@ export type CreateGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -381,6 +444,7 @@ export type CreateGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -393,6 +457,14 @@ export type UpdateGameMutation = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -430,10 +502,7 @@ export type UpdateGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -444,6 +513,7 @@ export type UpdateGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -456,6 +526,14 @@ export type DeleteGameMutation = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -493,10 +571,7 @@ export type DeleteGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -507,6 +582,7 @@ export type DeleteGameMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -559,16 +635,14 @@ export type CreatePlayerMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -630,16 +704,14 @@ export type UpdatePlayerMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -701,16 +773,14 @@ export type DeletePlayerMutation = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -736,7 +806,9 @@ export type CreateChangeMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -758,7 +830,9 @@ export type UpdateChangeMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -780,7 +854,9 @@ export type DeleteChangeMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -801,7 +877,9 @@ export type CreatePaletteMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -845,7 +923,9 @@ export type UpdatePaletteMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -889,7 +969,9 @@ export type DeletePaletteMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -1005,7 +1087,9 @@ export type CreateLegacyMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -1027,7 +1111,9 @@ export type UpdateLegacyMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -1049,7 +1135,9 @@ export type DeleteLegacyMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -1074,7 +1162,9 @@ export type CreatePeriodMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -1108,7 +1198,9 @@ export type UpdatePeriodMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -1142,7 +1234,9 @@ export type DeletePeriodMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -1282,13 +1376,17 @@ export type CreateFocusMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -1306,13 +1404,17 @@ export type UpdateFocusMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -1330,13 +1432,17 @@ export type DeleteFocusMutation = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -1419,6 +1525,34 @@ export type DeleteSceneMutation = {
   } | null,
 };
 
+export type GetUserQueryVariables = {
+  id: string,
+};
+
+export type GetUserQuery = {
+  getUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
+export type ListUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUsersQuery = {
+  listUsers:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type GetGameQueryVariables = {
   id: string,
 };
@@ -1428,6 +1562,14 @@ export type GetGameQuery = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -1465,10 +1607,7 @@ export type GetGameQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -1479,6 +1618,7 @@ export type GetGameQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -1495,6 +1635,14 @@ export type ListGamesQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      players:  {
+        __typename: "ModelPlayerConnection",
+        items:  Array< {
+          __typename: "Player",
+          id: string,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
       palette:  {
         __typename: "Palette",
         id: string,
@@ -1532,10 +1680,7 @@ export type ListGamesQuery = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      owner:  {
-        __typename: "Player",
-        id: string,
-      },
+      owner: string | null,
       touch: string | null,
       changes:  {
         __typename: "ModelChangeConnection",
@@ -1546,6 +1691,7 @@ export type ListGamesQuery = {
         } | null > | null,
         nextToken: string | null,
       } | null,
+      createdAt: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -1600,16 +1746,14 @@ export type GetPlayerQuery = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -1675,16 +1819,14 @@ export type ListPlayersQuery = {
         } | null > | null,
         nextToken: string | null,
       } | null,
-      ownedGames:  {
-        __typename: "ModelGameConnection",
-        items:  Array< {
-          __typename: "Game",
-          id: string,
-          bigPicture: string,
-          touch: string | null,
-        } | null > | null,
-        nextToken: string | null,
-      } | null,
+      game:  {
+        __typename: "Game",
+        id: string,
+        bigPicture: string,
+        owner: string | null,
+        touch: string | null,
+        createdAt: string | null,
+      },
       createdChanges:  {
         __typename: "ModelChangeConnection",
         items:  Array< {
@@ -1712,7 +1854,9 @@ export type GetChangeQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -1738,7 +1882,9 @@ export type ListChangesQuery = {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       },
       player:  {
         __typename: "Player",
@@ -1761,7 +1907,9 @@ export type GetPaletteQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -1809,7 +1957,9 @@ export type ListPalettesQuery = {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       },
       items:  {
         __typename: "ModelPaletteItemConnection",
@@ -1909,7 +2059,9 @@ export type GetLegacyQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -1935,7 +2087,9 @@ export type ListLegacysQuery = {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       },
       player:  {
         __typename: "Player",
@@ -1962,7 +2116,9 @@ export type GetPeriodQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -2000,7 +2156,9 @@ export type ListPeriodsQuery = {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       },
       events:  {
         __typename: "ModelEventConnection",
@@ -2112,13 +2270,17 @@ export type GetFocusQuery = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -2140,13 +2302,17 @@ export type ListFocussQuery = {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       } | null,
       game:  {
         __typename: "Game",
         id: string,
         bigPicture: string,
+        owner: string | null,
         touch: string | null,
+        createdAt: string | null,
       },
     } | null > | null,
     nextToken: string | null,
@@ -2211,11 +2377,40 @@ export type ListScenesQuery = {
   } | null,
 };
 
+export type OnCreateUserSubscription = {
+  onCreateUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser:  {
+    __typename: "User",
+    id: string,
+  } | null,
+};
+
 export type OnCreateGameSubscription = {
   onCreateGame:  {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -2253,10 +2448,7 @@ export type OnCreateGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -2267,6 +2459,7 @@ export type OnCreateGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -2275,6 +2468,14 @@ export type OnUpdateGameSubscription = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -2312,10 +2513,7 @@ export type OnUpdateGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -2326,6 +2524,7 @@ export type OnUpdateGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -2334,6 +2533,14 @@ export type OnDeleteGameSubscription = {
     __typename: "Game",
     id: string,
     bigPicture: string,
+    players:  {
+      __typename: "ModelPlayerConnection",
+      items:  Array< {
+        __typename: "Player",
+        id: string,
+      } | null > | null,
+      nextToken: string | null,
+    } | null,
     palette:  {
       __typename: "Palette",
       id: string,
@@ -2371,10 +2578,7 @@ export type OnDeleteGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    owner:  {
-      __typename: "Player",
-      id: string,
-    },
+    owner: string | null,
     touch: string | null,
     changes:  {
       __typename: "ModelChangeConnection",
@@ -2385,6 +2589,7 @@ export type OnDeleteGameSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
+    createdAt: string | null,
   } | null,
 };
 
@@ -2433,16 +2638,14 @@ export type OnCreatePlayerSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -2500,16 +2703,14 @@ export type OnUpdatePlayerSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -2567,16 +2768,14 @@ export type OnDeletePlayerSubscription = {
       } | null > | null,
       nextToken: string | null,
     } | null,
-    ownedGames:  {
-      __typename: "ModelGameConnection",
-      items:  Array< {
-        __typename: "Game",
-        id: string,
-        bigPicture: string,
-        touch: string | null,
-      } | null > | null,
-      nextToken: string | null,
-    } | null,
+    game:  {
+      __typename: "Game",
+      id: string,
+      bigPicture: string,
+      owner: string | null,
+      touch: string | null,
+      createdAt: string | null,
+    },
     createdChanges:  {
       __typename: "ModelChangeConnection",
       items:  Array< {
@@ -2598,7 +2797,9 @@ export type OnCreateChangeSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2616,7 +2817,9 @@ export type OnUpdateChangeSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2634,7 +2837,9 @@ export type OnDeleteChangeSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2651,7 +2856,9 @@ export type OnCreatePaletteSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -2691,7 +2898,9 @@ export type OnUpdatePaletteSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -2731,7 +2940,9 @@ export type OnDeletePaletteSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     items:  {
       __typename: "ModelPaletteItemConnection",
@@ -2831,7 +3042,9 @@ export type OnCreateLegacySubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2849,7 +3062,9 @@ export type OnUpdateLegacySubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2867,7 +3082,9 @@ export type OnDeleteLegacySubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     player:  {
       __typename: "Player",
@@ -2888,7 +3105,9 @@ export type OnCreatePeriodSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -2918,7 +3137,9 @@ export type OnUpdatePeriodSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -2948,7 +3169,9 @@ export type OnDeletePeriodSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
     events:  {
       __typename: "ModelEventConnection",
@@ -3072,13 +3295,17 @@ export type OnCreateFocusSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -3092,13 +3319,17 @@ export type OnUpdateFocusSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };
@@ -3112,13 +3343,17 @@ export type OnDeleteFocusSubscription = {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     } | null,
     game:  {
       __typename: "Game",
       id: string,
       bigPicture: string,
+      owner: string | null,
       touch: string | null,
+      createdAt: string | null,
     },
   } | null,
 };

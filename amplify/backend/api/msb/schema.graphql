@@ -23,21 +23,28 @@ enum Tone {
   DARK
 }
 
+type User
+  @model
+{
+  id: ID!
+}
+
 type Game
   @model
   @auth(rules: [{allow: owner}])
 {
   id: ID! 
   bigPicture: String!
+  players: [Player!]! @connection(name: "GamePlayers")
   palette: Palette @connection(name: "GamePalette")
   legacies: [Legacy!]! @connection(name: "GameLegacies")
   periods: [Period!]! @connection(name: "GamePeriods")
   currentFocus: Focus @connection(name: "GameCurrentFocus")
   focii: [Focus!]! @connection(name: "GameFocii")
-  owner: Player! @connection(name: "PlayerGames")
+  owner: String
   touch: String
   changes: [Change!]! @connection(name: "GameChanges")
-
+  createdAt: AWSDateTime
 }
 
 type Player
@@ -48,7 +55,7 @@ type Player
   createdEvents: [Event!]! @connection(name: "PlayerCreatedEvents")
   createdLegacies: [Legacy!]! @connection(name: "PlayerLegacies")
   createdScenes: [Scene!]! @connection(name: "PlayerCreatedScenes")
-  ownedGames: [Game!]! @connection(name: "PlayerGames")
+  game: Game! @connection(name: "GamePlayers")
   createdChanges: [Change!]! @connection(name: "PlayerChanges")
 }
 

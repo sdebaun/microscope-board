@@ -1,10 +1,34 @@
 // tslint:disable
 // this is an auto generated file. This will be overwritten
 
+export const createUser = `mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    id
+  }
+}
+`;
 export const createGame = `mutation CreateGame($input: CreateGameInput!) {
   createGame(input: $input) {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -34,9 +58,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -45,6 +67,7 @@ export const createGame = `mutation CreateGame($input: CreateGameInput!) {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -52,6 +75,12 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
   updateGame(input: $input) {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -81,9 +110,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -92,6 +119,7 @@ export const updateGame = `mutation UpdateGame($input: UpdateGameInput!) {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -99,6 +127,12 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
   deleteGame(input: $input) {
     id
     bigPicture
+    players {
+      items {
+        id
+      }
+      nextToken
+    }
     palette {
       id
     }
@@ -128,9 +162,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
       }
       nextToken
     }
-    owner {
-      id
-    }
+    owner
     touch
     changes {
       items {
@@ -139,6 +171,7 @@ export const deleteGame = `mutation DeleteGame($input: DeleteGameInput!) {
       }
       nextToken
     }
+    createdAt
   }
 }
 `;
@@ -178,13 +211,12 @@ export const createPlayer = `mutation CreatePlayer($input: CreatePlayerInput!) {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -232,13 +264,12 @@ export const updatePlayer = `mutation UpdatePlayer($input: UpdatePlayerInput!) {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -286,13 +317,12 @@ export const deletePlayer = `mutation DeletePlayer($input: DeletePlayerInput!) {
       }
       nextToken
     }
-    ownedGames {
-      items {
-        id
-        bigPicture
-        touch
-      }
-      nextToken
+    game {
+      id
+      bigPicture
+      owner
+      touch
+      createdAt
     }
     createdChanges {
       items {
@@ -311,7 +341,9 @@ export const createChange = `mutation CreateChange($input: CreateChangeInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -326,7 +358,9 @@ export const updateChange = `mutation UpdateChange($input: UpdateChangeInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -341,7 +375,9 @@ export const deleteChange = `mutation DeleteChange($input: DeleteChangeInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -355,7 +391,9 @@ export const createPalette = `mutation CreatePalette($input: CreatePaletteInput!
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -387,7 +425,9 @@ export const updatePalette = `mutation UpdatePalette($input: UpdatePaletteInput!
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -419,7 +459,9 @@ export const deletePalette = `mutation DeletePalette($input: DeletePaletteInput!
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     items {
       items {
@@ -499,7 +541,9 @@ export const createLegacy = `mutation CreateLegacy($input: CreateLegacyInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -514,7 +558,9 @@ export const updateLegacy = `mutation UpdateLegacy($input: UpdateLegacyInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -529,7 +575,9 @@ export const deleteLegacy = `mutation DeleteLegacy($input: DeleteLegacyInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     player {
       id
@@ -547,7 +595,9 @@ export const createPeriod = `mutation CreatePeriod($input: CreatePeriodInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -572,7 +622,9 @@ export const updatePeriod = `mutation UpdatePeriod($input: UpdatePeriodInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -597,7 +649,9 @@ export const deletePeriod = `mutation DeletePeriod($input: DeletePeriodInput!) {
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     events {
       items {
@@ -701,12 +755,16 @@ export const createFocus = `mutation CreateFocus($input: CreateFocusInput!) {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }
@@ -718,12 +776,16 @@ export const updateFocus = `mutation UpdateFocus($input: UpdateFocusInput!) {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }
@@ -735,12 +797,16 @@ export const deleteFocus = `mutation DeleteFocus($input: DeleteFocusInput!) {
     focusedGame {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
     game {
       id
       bigPicture
+      owner
       touch
+      createdAt
     }
   }
 }

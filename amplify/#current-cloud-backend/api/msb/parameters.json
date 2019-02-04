@@ -2,12 +2,12 @@
     "AppSyncApiName": "msb",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
-            "authcognitoe32421f1",
+            "authcognito1b0f761d",
             "Outputs.UserPoolId"
         ]
     },
-    "schemaGraphql": "s3://msb-20190204095834-deployment/amplify-appsync-files/schema.graphql.1549304597372",
-    "ResolverBucket": "msb-20190204095834-deployment",
+    "schemaGraphql": "s3://msb-20190204130258-deployment/amplify-appsync-files/schema.graphql.1549323673366",
+    "ResolverBucket": "msb-20190204130258-deployment",
     "ResolverRootKey": "amplify-appsync-files",
-    "DeploymentTimestamp": "1549304597372"
+    "DeploymentTimestamp": "1549323673366"
 }

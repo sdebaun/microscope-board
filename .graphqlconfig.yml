@@ -2,15 +2,15 @@ projects:
   msb:
     schemaPath: src/graphql/schema.json
     includes:
-      - src/graphql/**/*.ts
+      - src/App/API/graphql/**/*.ts
     excludes:
       - amplify/**
     extensions:
       amplify:
         codeGenTarget: typescript
-        generatedFileName: src/App/API.ts
-        docsFilePath: src/graphql
-        graphQLApiId: ha36zgfiovfu7eqzsvkypnwn5q
+        generatedFileName: src/App/API/index.ts
+        docsFilePath: src/App/API/graphql
+        graphQLApiId: n3mkzadxgjdlncm5uv652h3m7a
       endpoints:
         prod: >-
-          https://sljheatnszbmzirkpdo4jbmurq.appsync-api.eu-west-1.amazonaws.com/graphql
+          https://tmyawnbwrzhfzj2k5hqqfi44wq.appsync-api.us-west-2.amazonaws.com/graphql

@@ -1,81 +1,130 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import gql from 'graphql-tag'
-import { useMutation } from 'react-apollo-hooks'
+// import gql from 'graphql-tag'
+// import { useMutation } from 'react-apollo-hooks'
 
-import { useSubscribedCollection } from 'App/lib/useSubscription';
-import { _ModelMutationType } from 'App/types/globalTypes';
+// import { useSubscribedCollection } from 'App/lib/useSubscription';
+// import { _ModelMutationType } from 'App/types/globalTypes';
 
-import { AllGames, AllGames_allGames } from './types/AllGames'
-import { GameListGame } from './types/GameListGame';
-import { SubGames } from './types/SubGames';
+// import { AllGames, AllGames_allGames } from './types/AllGames'
+// import { GameListGame } from './types/GameListGame';
+// import { SubGames } from './types/SubGames';
 
 import { Button, Segment } from 'semantic-ui-react'
 
-const GAME_LIST_GAME = gql`
-  fragment GameListGame on Game {
-    id
-    bigPicture
-  }
-`
+// const GAME_LIST_GAME = gql`
+//   fragment GameListGame on Game {
+//     id
+//     bigPicture
+//   }
+// `
 
-const ALL_GAMES = gql`
-  query AllGames {
-    allGames {
-      ...GameListGame
-    }
-  }
-  ${GAME_LIST_GAME}
-`
-const DELETE_GAME = gql`
-  mutation DeleteGame($id: ID!) {
-    deleteGame(id: $id) {
-      id
-    }
-  }
-`
+// const ALL_GAMES = gql`
+//   query AllGames {
+//     allGames {
+//       ...GameListGame
+//     }
+//   }
+//   ${GAME_LIST_GAME}
+// `
+// const DELETE_GAME = gql`
+//   mutation DeleteGame($id: ID!) {
+//     deleteGame(id: $id) {
+//       id
+//     }
+//   }
+// `
 
-const SUB_GAMES = gql`
-  subscription SubGames {
-    Game {
-      mutation
-      node {
-        ...GameListGame
-      }
-      updatedFields
-      previousValues {
-        id
-      }
-    }
-  }
-  ${GAME_LIST_GAME}
-`
+// const SUB_GAMES = gql`
+//   subscription SubGames {
+//     Game {
+//       mutation
+//       node {
+//         ...GameListGame
+//       }
+//       updatedFields
+//       previousValues {
+//         id
+//       }
+//     }
+//   }
+//   ${GAME_LIST_GAME}
+// `
 
-const GameLink: React.SFC<{game: AllGames_allGames}> = ({game: {id, bigPicture}}) =>
+// const GameLink: React.SFC<{game: AllGames_allGames}> = ({game: {id, bigPicture}}) =>
+//   <Link to={`/game/${id}`}>{bigPicture}</Link>
+
+const GameLink: React.SFC<{game: any}> = ({game: {id, bigPicture}}) =>
   <Link to={`/game/${id}`}>{bigPicture}</Link>
 
-const GameItem: React.SFC<{game: AllGames_allGames}> = ({game}) => {
-  const deleteGame = useMutation(DELETE_GAME)
+// const GameItem: React.SFC<{game: AllGames_allGames}> = ({game}) => {
+//   const deleteGame = useMutation(DELETE_GAME)
+//   return (
+//     <div>
+//       <GameLink {...{game}}/>
+//       <Button onClick={() => deleteGame({variables: {id: game.id}})}>delete</Button>
+//     </div>
+//   )
+// }
+
+const GameItem: React.SFC<{game: any}> = ({game}) => {
+  const deleteGame = (a: any) => {}
   return (
     <div>
       <GameLink {...{game}}/>
+      <div style={{color: 'black'}}>{game.owner}</div>
       <Button onClick={() => deleteGame({variables: {id: game.id}})}>delete</Button>
     </div>
   )
 }
 
+// export const GameList: React.SFC = () => {
+//   const games = useSubscribedCollection<AllGames, SubGames, GameListGame>(
+//     ALL_GAMES,
+//     SUB_GAMES,
+//     ({data: {allGames}}) => allGames,
+//     ({data: {Game}}) => Game,
+//     (allGames) => ({allGames}),
+//   )
+//   if (games.length == 0) { return <div>You have no games!</div>}
+//   return (
+//     <Segment>
+//       {games.map((game) => <GameItem {...{key: game.id, game}}/>)}
+//     </Segment>
+//   )
+// }
+
+import { unstable_createResource as createResource } from 'react-cache'
+import { API, graphqlOperation } from 'aws-amplify';
+import { listGames } from 'App/API/graphql/queries';
+import { ListGamesQuery } from 'App/API';
+
+const GamesResource = createResource(() => API.graphql(graphqlOperation(listGames)) )
+// const GamesResource = createResource(async () => [{id: 1, bigPicture: 'foo'}])
+
 export const GameList: React.SFC = () => {
-  const games = useSubscribedCollection<AllGames, SubGames, GameListGame>(
-    ALL_GAMES,
-    SUB_GAMES,
-    ({data: {allGames}}) => allGames,
-    ({data: {Game}}) => Game,
-    (allGames) => ({allGames}),
-  )
+  const {data: {listGames}} = GamesResource.read() as {data: ListGamesQuery}
+  console.log(listGames)
+  if (!listGames || !listGames.items) { return null }
+  const games = listGames.items
   if (games.length == 0) { return <div>You have no games!</div>}
   return (
     <Segment>
-      {games.map((game) => <GameItem {...{key: game.id, game}}/>)}
+      {games.map((game: any) => <GameItem {...{key: game.id, game}}/>)}
     </Segment>
   )
 }
+
+// export const GameList: React.SFC = () =>
+
+// export class GameList extends React.Component {
+//   render() {
+//     const games = GamesResource.read('foo')
+//     if (games.length == 0) { return <div>You have no games!</div>}
+//     return (
+//       <Segment>
+//         {games.map((game: any) => <GameItem {...{key: game.id, game}}/>)}
+//       </Segment>
+//     )
+//   }
+// }

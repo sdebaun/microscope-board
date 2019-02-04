@@ -3,17 +3,23 @@ enum Tone {
   DARK
 }
 
+type User {
+  id: ID!
+}
+
 type Game {
   id: ID!
   bigPicture: String!
+  players(filter: ModelPlayerFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPlayerConnection
   palette: Palette
   legacies(filter: ModelLegacyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLegacyConnection
   periods(filter: ModelPeriodFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPeriodConnection
   currentFocus: Focus
   focii(filter: ModelFocusFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelFocusConnection
-  owner: Player!
+  owner: String
   touch: String
   changes(filter: ModelChangeFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelChangeConnection
+  createdAt: AWSDateTime
 }
 
 type Player {
@@ -22,7 +28,7 @@ type Player {
   createdEvents(filter: ModelEventFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelEventConnection
   createdLegacies(filter: ModelLegacyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLegacyConnection
   createdScenes(filter: ModelSceneFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSceneConnection
-  ownedGames(filter: ModelGameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelGameConnection
+  game: Game!
   createdChanges(filter: ModelChangeFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelChangeConnection
 }
 
@@ -99,8 +105,8 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelGameConnection {
-  items: [Game]
+type ModelUserConnection {
+  items: [User]
   nextToken: String
 }
 
@@ -159,16 +165,16 @@ input ModelBooleanFilterInput {
   eq: Boolean
 }
 
-input ModelGameFilterInput {
+input ModelUserFilterInput {
   id: ModelIDFilterInput
-  bigPicture: ModelStringFilterInput
-  touch: ModelStringFilterInput
-  and: [ModelGameFilterInput]
-  or: [ModelGameFilterInput]
-  not: ModelGameFilterInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
 }
 
 type Query {
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
   getGame(id: ID!): Game
   listGames(filter: ModelGameFilterInput, limit: Int, nextToken: String): ModelGameConnection
   getPlayer(id: ID!): Player
@@ -191,29 +197,22 @@ type Query {
   listScenes(filter: ModelSceneFilterInput, limit: Int, nextToken: String): ModelSceneConnection
 }
 
-input CreateGameInput {
+input CreateUserInput {
   id: ID
-  bigPicture: String!
-  touch: String
-  gamePaletteId: ID
-  gameCurrentFocusId: ID
-  gameOwnerId: ID!
 }
 
-input UpdateGameInput {
+input UpdateUserInput {
   id: ID!
-  bigPicture: String
-  touch: String
-  gamePaletteId: ID
-  gameCurrentFocusId: ID
-  gameOwnerId: ID
 }
 
-input DeleteGameInput {
+input DeleteUserInput {
   id: ID
 }
 
 type Mutation {
+  createUser(input: CreateUserInput!): User
+  updateUser(input: UpdateUserInput!): User
+  deleteUser(input: DeleteUserInput!): User
   createGame(input: CreateGameInput!): Game
   updateGame(input: UpdateGameInput!): Game
   deleteGame(input: DeleteGameInput!): Game
@@ -247,6 +246,9 @@ type Mutation {
 }
 
 type Subscription {
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
   onCreateGame: Game @aws_subscribe(mutations: ["createGame"])
   onUpdateGame: Game @aws_subscribe(mutations: ["updateGame"])
   onDeleteGame: Game @aws_subscribe(mutations: ["deleteGame"])
@@ -279,6 +281,46 @@ type Subscription {
   onDeleteScene: Scene @aws_subscribe(mutations: ["deleteScene"])
 }
 
+type ModelGameConnection {
+  items: [Game]
+  nextToken: String
+}
+
+input ModelGameFilterInput {
+  id: ModelIDFilterInput
+  bigPicture: ModelStringFilterInput
+  owner: ModelStringFilterInput
+  touch: ModelStringFilterInput
+  createdAt: ModelStringFilterInput
+  and: [ModelGameFilterInput]
+  or: [ModelGameFilterInput]
+  not: ModelGameFilterInput
+}
+
+input CreateGameInput {
+  id: ID
+  bigPicture: String!
+  owner: String
+  touch: String
+  createdAt: AWSDateTime
+  gamePaletteId: ID
+  gameCurrentFocusId: ID
+}
+
+input UpdateGameInput {
+  id: ID!
+  bigPicture: String
+  owner: String
+  touch: String
+  createdAt: AWSDateTime
+  gamePaletteId: ID
+  gameCurrentFocusId: ID
+}
+
+input DeleteGameInput {
+  id: ID
+}
+
 type ModelPlayerConnection {
   items: [Player]
   nextToken: String
@@ -293,10 +335,12 @@ input ModelPlayerFilterInput {
 
 input CreatePlayerInput {
   id: ID
+  playerGameId: ID!
 }
 
 input UpdatePlayerInput {
   id: ID!
+  playerGameId: ID
 }
 
 input DeletePlayerInput {

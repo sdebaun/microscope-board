@@ -9,8 +9,10 @@ import createApolloClient from './createApolloClient'
 import createAmplifyClient from './createAmplifyClient'
 
 import { Loader, Dimmer } from 'semantic-ui-react'
+import { withAuthenticator } from 'aws-amplify-react'
 
 const client = createApolloClient()
+const amplifyClient = createAmplifyClient()
 
 const PageLoader = () => <Dimmer active><Loader/></Dimmer>
 
@@ -24,4 +26,9 @@ const App: React.SFC<{}> = () =>
     </Suspense>
   </ApolloProvider>
 
-export default App
+const federated = {
+  google_client_id: '961839908462-ca3b0n9c1da5dv2juhkjkkauqu3rmrhd.apps.googleusercontent.com',
+  facebook_app_id: '',
+}
+
+export default  withAuthenticator(App, { federated } )

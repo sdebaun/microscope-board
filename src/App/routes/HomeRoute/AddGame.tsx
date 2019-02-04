@@ -12,29 +12,45 @@ type AddGameValues = {
   bigPicture: string
 }
 
-const CREATE_GAME = gql`
-  mutation CreateGame(
-    $bigPicture: String!
-  ) {
-    createGame(
-      ownerId: "cjrfcd115amje01169ghfbrmp"
-      bigPicture: $bigPicture
-    ) {
-      id
-    }
-  }
-`
+// const CREATE_GAME = gql`
+//   mutation CreateGame(
+//     $bigPicture: String!
+//   ) {
+//     createGame(
+//       ownerId: "cjrfcd115amje01169ghfbrmp"
+//       bigPicture: $bigPicture
+//     ) {
+//       id
+//     }
+//   }
+// `
+
+import { API, graphqlOperation, Auth } from 'aws-amplify'
+import { createGame as createGameGQL } from 'App/API/graphql/mutations'
+import { GraphQLResult } from '@aws-amplify/api/lib/types';
+// import { DocumentNode } from 'graphql';
+
+const makeHandler = (gql: string) =>
+  async (input: any) =>
+    (API.graphql(graphqlOperation(gql, {input})) as Promise<GraphQLResult>)
+      .then(data => { console.log(data); return data })
+
+import { unstable_createResource as createResource } from 'react-cache'
+
+const UserResource = createResource(() => Auth.currentAuthenticatedUser().then(d => { console.log(d); return d }))
 
 const AddGameForm: React.SFC<{cancel: ()=>void, complete: (id: string)=>void}> = ({cancel, complete}) => {
-  const createGame = useMutation<CreateGame>(CREATE_GAME)
-
+  const createGame = makeHandler(createGameGQL)
+  const currentUser = UserResource.read()
+  console.log(currentUser)
   return (
   <Formik<AddGameValues>
       initialValues={{bigPicture: ''}}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         console.log('values', values)
-        createGame({variables: values}).then((result) => {
+        createGame(values).then((result: any) => {
           setSubmitting(false)
+          console.log('result', result)
           resetForm()
           if (result.data && result.data.createGame) {
             complete(result.data.createGame.id)
@@ -60,39 +76,13 @@ const AddGameForm: React.SFC<{cancel: ()=>void, complete: (id: string)=>void}> =
       )}
     </Formik>
   )
-  // return (
-  //   <Segment>
-  //   <Formik<AddGameValues>
-  //     initialValues={{bigPicture: ''}}
-  //     onSubmit={(values, { setSubmitting }) => {
-  //       console.log('values', values)
-  //       createGame({variables: values}).then(() => {
-  //         setSubmitting(false)
-  //       })
-  //     }}
-  //     >
-  //     {({values, handleChange, handleBlur, handleSubmit}) => (
-  //       <form onSubmit={handleSubmit}>
-  //         <label htmlFor='bigPicture'>
-  //           Big Picture
-  //         </label>
-  //         <input id='bigPicture' type='text' placeholder='Whats the big picture?'
-  //           value={values.bigPicture}
-  //           onChange={handleChange}
-  //           onBlur={handleBlur}
-  //           />
-  //       </form>
-  //     )}
-  //   </Formik>
-  //   <Button onClick={cancel}>Cancel</Button>
-  //   </Segment>
-  // )
 }
 
 export const AddGame: React.SFC = () => {
   const [adding, setAdding] = useState(false)
   const cancel = () => setAdding(false)
-  const complete = (id: string) => history.push(`/game/${id}`)
+  // const complete = (id: string) => history.push(`/game/${id}`)
+  const complete = (id: string) => {}
 
   return (
     <>
