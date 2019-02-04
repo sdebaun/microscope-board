@@ -6,6 +6,7 @@ import { HomeRoute } from 'App/routes/HomeRoute'
 import { GameRoute } from 'App/routes/GameRoute'
 
 import createApolloClient from './createApolloClient'
+import createAmplifyClient from './createAmplifyClient'
 
 import { Loader, Dimmer } from 'semantic-ui-react'
 

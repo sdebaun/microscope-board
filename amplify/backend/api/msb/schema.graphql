@@ -1,0 +1,121 @@
+# type Task 
+#   @model 
+#   @auth(rules: [
+#       {allow: groups, groups: ["Managers"], queries: null, mutations: [create, update, delete]},
+#       {allow: groups, groups: ["Employees"], queries: [get, list], mutations: null}
+#     ])
+# {
+#   id: ID!
+#   title: String!
+#   description: String
+#   status: String
+# }
+# type PrivateNote
+#   @model
+#   @auth(rules: [{allow: owner}])
+# {
+#   id: ID!
+#   content: String!
+# }
+
+enum Tone {
+  LIGHT
+  DARK
+}
+
+type Game
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID! 
+  bigPicture: String!
+  palette: Palette @connection(name: "GamePalette")
+  legacies: [Legacy!]! @connection(name: "GameLegacies")
+  periods: [Period!]! @connection(name: "GamePeriods")
+  currentFocus: Focus @connection(name: "GameCurrentFocus")
+  focii: [Focus!]! @connection(name: "GameFocii")
+  owner: Player! @connection(name: "PlayerGames")
+  touch: String
+  changes: [Change!]! @connection(name: "GameChanges")
+
+}
+
+type Player
+  @model
+{
+  id: ID! 
+  createdPeriods: [Period!]! @connection(name: "PlayerCreatedPeriods")
+  createdEvents: [Event!]! @connection(name: "PlayerCreatedEvents")
+  createdLegacies: [Legacy!]! @connection(name: "PlayerLegacies")
+  createdScenes: [Scene!]! @connection(name: "PlayerCreatedScenes")
+  ownedGames: [Game!]! @connection(name: "PlayerGames")
+  createdChanges: [Change!]! @connection(name: "PlayerChanges")
+}
+
+type Change @model {
+  id: ID!
+  createdAt: AWSDateTime
+  game: Game! @connection(name: "GameChanges")
+  player: Player! @connection(name: "PlayerChanges")
+}
+
+type Palette @model {
+  id: ID! 
+  game: Game! @connection(name: "GamePalette")
+  items: [PaletteItem!]! @connection(name: "PaletteItems")
+  yesItems: [PaletteItem!]! @connection(name: "PaletteYesItems")
+  noItems: [PaletteItem!]! @connection(name: "PaletteNoItems")
+}
+
+type PaletteItem @model {
+  id: ID! 
+  title: String!
+  palette: Palette! @connection(name: "PaletteItems")
+  yesPalette: Palette @connection(name: "PaletteYesItems")
+  noPalette: Palette @connection(name: "PaletteNoItems")
+}
+
+type Legacy @model {
+  id: ID! 
+  game: Game! @connection(name: "GameLegacies")
+  player: Player! @connection(name: "PlayerLegacies")
+  title: String!
+}
+
+type Period @model {
+  id: ID! 
+  tone: Tone!
+  title: String!
+  seq: Int!
+  game: Game! @connection(name: "GamePeriods")
+  events: [Event!]! @connection(name: "PeriodEvents")
+  creator: Player! @connection(name: "PlayerCreatedPeriods")
+}
+
+type Event @model {
+  id: ID! 
+  tone: Tone!
+  seq: Int!
+  title: String!
+  period: Period! @connection(name: "PeriodEvents")
+  scenes: [Scene!]! @connection(name: "EventScenes")
+  creator: Player! @connection(name: "PlayerCreatedEvents")
+}
+
+type Focus @model{
+  id: ID! 
+  title: String!
+  focusedGame: Game @connection(name: "GameCurrentFocus")
+  game: Game! @connection(name: "GameFocii")
+}
+
+type Scene @model {
+  id: ID! 
+  tone: Tone!
+  seq: Int!
+  question: String!
+  setting: String!
+  answer: String!
+  event: Event! @connection(name: "EventScenes")
+  creator: Player! @connection(name: "PlayerCreatedScenes")
+}

@@ -1,0 +1,570 @@
+enum Tone {
+  LIGHT
+  DARK
+}
+
+type Game {
+  id: ID!
+  bigPicture: String!
+  palette: Palette
+  legacies(filter: ModelLegacyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLegacyConnection
+  periods(filter: ModelPeriodFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPeriodConnection
+  currentFocus: Focus
+  focii(filter: ModelFocusFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelFocusConnection
+  owner: Player!
+  touch: String
+  changes(filter: ModelChangeFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelChangeConnection
+}
+
+type Player {
+  id: ID!
+  createdPeriods(filter: ModelPeriodFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPeriodConnection
+  createdEvents(filter: ModelEventFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelEventConnection
+  createdLegacies(filter: ModelLegacyFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLegacyConnection
+  createdScenes(filter: ModelSceneFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSceneConnection
+  ownedGames(filter: ModelGameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelGameConnection
+  createdChanges(filter: ModelChangeFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelChangeConnection
+}
+
+type Change {
+  id: ID!
+  createdAt: AWSDateTime
+  game: Game!
+  player: Player!
+}
+
+type Palette {
+  id: ID!
+  game: Game!
+  items(filter: ModelPaletteItemFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPaletteItemConnection
+  yesItems(filter: ModelPaletteItemFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPaletteItemConnection
+  noItems(filter: ModelPaletteItemFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPaletteItemConnection
+}
+
+type PaletteItem {
+  id: ID!
+  title: String!
+  palette: Palette!
+  yesPalette: Palette
+  noPalette: Palette
+}
+
+type Legacy {
+  id: ID!
+  game: Game!
+  player: Player!
+  title: String!
+}
+
+type Period {
+  id: ID!
+  tone: Tone!
+  title: String!
+  seq: Int!
+  game: Game!
+  events(filter: ModelEventFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelEventConnection
+  creator: Player!
+}
+
+type Event {
+  id: ID!
+  tone: Tone!
+  seq: Int!
+  title: String!
+  period: Period!
+  scenes(filter: ModelSceneFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelSceneConnection
+  creator: Player!
+}
+
+type Focus {
+  id: ID!
+  title: String!
+  focusedGame: Game
+  game: Game!
+}
+
+type Scene {
+  id: ID!
+  tone: Tone!
+  seq: Int!
+  question: String!
+  setting: String!
+  answer: String!
+  event: Event!
+  creator: Player!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelGameConnection {
+  items: [Game]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelGameFilterInput {
+  id: ModelIDFilterInput
+  bigPicture: ModelStringFilterInput
+  touch: ModelStringFilterInput
+  and: [ModelGameFilterInput]
+  or: [ModelGameFilterInput]
+  not: ModelGameFilterInput
+}
+
+type Query {
+  getGame(id: ID!): Game
+  listGames(filter: ModelGameFilterInput, limit: Int, nextToken: String): ModelGameConnection
+  getPlayer(id: ID!): Player
+  listPlayers(filter: ModelPlayerFilterInput, limit: Int, nextToken: String): ModelPlayerConnection
+  getChange(id: ID!): Change
+  listChanges(filter: ModelChangeFilterInput, limit: Int, nextToken: String): ModelChangeConnection
+  getPalette(id: ID!): Palette
+  listPalettes(filter: ModelPaletteFilterInput, limit: Int, nextToken: String): ModelPaletteConnection
+  getPaletteItem(id: ID!): PaletteItem
+  listPaletteItems(filter: ModelPaletteItemFilterInput, limit: Int, nextToken: String): ModelPaletteItemConnection
+  getLegacy(id: ID!): Legacy
+  listLegacys(filter: ModelLegacyFilterInput, limit: Int, nextToken: String): ModelLegacyConnection
+  getPeriod(id: ID!): Period
+  listPeriods(filter: ModelPeriodFilterInput, limit: Int, nextToken: String): ModelPeriodConnection
+  getEvent(id: ID!): Event
+  listEvents(filter: ModelEventFilterInput, limit: Int, nextToken: String): ModelEventConnection
+  getFocus(id: ID!): Focus
+  listFocuss(filter: ModelFocusFilterInput, limit: Int, nextToken: String): ModelFocusConnection
+  getScene(id: ID!): Scene
+  listScenes(filter: ModelSceneFilterInput, limit: Int, nextToken: String): ModelSceneConnection
+}
+
+input CreateGameInput {
+  id: ID
+  bigPicture: String!
+  touch: String
+  gamePaletteId: ID
+  gameCurrentFocusId: ID
+  gameOwnerId: ID!
+}
+
+input UpdateGameInput {
+  id: ID!
+  bigPicture: String
+  touch: String
+  gamePaletteId: ID
+  gameCurrentFocusId: ID
+  gameOwnerId: ID
+}
+
+input DeleteGameInput {
+  id: ID
+}
+
+type Mutation {
+  createGame(input: CreateGameInput!): Game
+  updateGame(input: UpdateGameInput!): Game
+  deleteGame(input: DeleteGameInput!): Game
+  createPlayer(input: CreatePlayerInput!): Player
+  updatePlayer(input: UpdatePlayerInput!): Player
+  deletePlayer(input: DeletePlayerInput!): Player
+  createChange(input: CreateChangeInput!): Change
+  updateChange(input: UpdateChangeInput!): Change
+  deleteChange(input: DeleteChangeInput!): Change
+  createPalette(input: CreatePaletteInput!): Palette
+  updatePalette(input: UpdatePaletteInput!): Palette
+  deletePalette(input: DeletePaletteInput!): Palette
+  createPaletteItem(input: CreatePaletteItemInput!): PaletteItem
+  updatePaletteItem(input: UpdatePaletteItemInput!): PaletteItem
+  deletePaletteItem(input: DeletePaletteItemInput!): PaletteItem
+  createLegacy(input: CreateLegacyInput!): Legacy
+  updateLegacy(input: UpdateLegacyInput!): Legacy
+  deleteLegacy(input: DeleteLegacyInput!): Legacy
+  createPeriod(input: CreatePeriodInput!): Period
+  updatePeriod(input: UpdatePeriodInput!): Period
+  deletePeriod(input: DeletePeriodInput!): Period
+  createEvent(input: CreateEventInput!): Event
+  updateEvent(input: UpdateEventInput!): Event
+  deleteEvent(input: DeleteEventInput!): Event
+  createFocus(input: CreateFocusInput!): Focus
+  updateFocus(input: UpdateFocusInput!): Focus
+  deleteFocus(input: DeleteFocusInput!): Focus
+  createScene(input: CreateSceneInput!): Scene
+  updateScene(input: UpdateSceneInput!): Scene
+  deleteScene(input: DeleteSceneInput!): Scene
+}
+
+type Subscription {
+  onCreateGame: Game @aws_subscribe(mutations: ["createGame"])
+  onUpdateGame: Game @aws_subscribe(mutations: ["updateGame"])
+  onDeleteGame: Game @aws_subscribe(mutations: ["deleteGame"])
+  onCreatePlayer: Player @aws_subscribe(mutations: ["createPlayer"])
+  onUpdatePlayer: Player @aws_subscribe(mutations: ["updatePlayer"])
+  onDeletePlayer: Player @aws_subscribe(mutations: ["deletePlayer"])
+  onCreateChange: Change @aws_subscribe(mutations: ["createChange"])
+  onUpdateChange: Change @aws_subscribe(mutations: ["updateChange"])
+  onDeleteChange: Change @aws_subscribe(mutations: ["deleteChange"])
+  onCreatePalette: Palette @aws_subscribe(mutations: ["createPalette"])
+  onUpdatePalette: Palette @aws_subscribe(mutations: ["updatePalette"])
+  onDeletePalette: Palette @aws_subscribe(mutations: ["deletePalette"])
+  onCreatePaletteItem: PaletteItem @aws_subscribe(mutations: ["createPaletteItem"])
+  onUpdatePaletteItem: PaletteItem @aws_subscribe(mutations: ["updatePaletteItem"])
+  onDeletePaletteItem: PaletteItem @aws_subscribe(mutations: ["deletePaletteItem"])
+  onCreateLegacy: Legacy @aws_subscribe(mutations: ["createLegacy"])
+  onUpdateLegacy: Legacy @aws_subscribe(mutations: ["updateLegacy"])
+  onDeleteLegacy: Legacy @aws_subscribe(mutations: ["deleteLegacy"])
+  onCreatePeriod: Period @aws_subscribe(mutations: ["createPeriod"])
+  onUpdatePeriod: Period @aws_subscribe(mutations: ["updatePeriod"])
+  onDeletePeriod: Period @aws_subscribe(mutations: ["deletePeriod"])
+  onCreateEvent: Event @aws_subscribe(mutations: ["createEvent"])
+  onUpdateEvent: Event @aws_subscribe(mutations: ["updateEvent"])
+  onDeleteEvent: Event @aws_subscribe(mutations: ["deleteEvent"])
+  onCreateFocus: Focus @aws_subscribe(mutations: ["createFocus"])
+  onUpdateFocus: Focus @aws_subscribe(mutations: ["updateFocus"])
+  onDeleteFocus: Focus @aws_subscribe(mutations: ["deleteFocus"])
+  onCreateScene: Scene @aws_subscribe(mutations: ["createScene"])
+  onUpdateScene: Scene @aws_subscribe(mutations: ["updateScene"])
+  onDeleteScene: Scene @aws_subscribe(mutations: ["deleteScene"])
+}
+
+type ModelPlayerConnection {
+  items: [Player]
+  nextToken: String
+}
+
+input ModelPlayerFilterInput {
+  id: ModelIDFilterInput
+  and: [ModelPlayerFilterInput]
+  or: [ModelPlayerFilterInput]
+  not: ModelPlayerFilterInput
+}
+
+input CreatePlayerInput {
+  id: ID
+}
+
+input UpdatePlayerInput {
+  id: ID!
+}
+
+input DeletePlayerInput {
+  id: ID
+}
+
+type ModelChangeConnection {
+  items: [Change]
+  nextToken: String
+}
+
+input ModelChangeFilterInput {
+  id: ModelIDFilterInput
+  createdAt: ModelStringFilterInput
+  and: [ModelChangeFilterInput]
+  or: [ModelChangeFilterInput]
+  not: ModelChangeFilterInput
+}
+
+input CreateChangeInput {
+  id: ID
+  createdAt: AWSDateTime
+  changeGameId: ID!
+  changePlayerId: ID!
+}
+
+input UpdateChangeInput {
+  id: ID!
+  createdAt: AWSDateTime
+  changeGameId: ID
+  changePlayerId: ID
+}
+
+input DeleteChangeInput {
+  id: ID
+}
+
+type ModelPaletteConnection {
+  items: [Palette]
+  nextToken: String
+}
+
+input ModelPaletteFilterInput {
+  id: ModelIDFilterInput
+  and: [ModelPaletteFilterInput]
+  or: [ModelPaletteFilterInput]
+  not: ModelPaletteFilterInput
+}
+
+input CreatePaletteInput {
+  id: ID
+  paletteGameId: ID!
+}
+
+input UpdatePaletteInput {
+  id: ID!
+  paletteGameId: ID
+}
+
+input DeletePaletteInput {
+  id: ID
+}
+
+type ModelPaletteItemConnection {
+  items: [PaletteItem]
+  nextToken: String
+}
+
+input ModelPaletteItemFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  and: [ModelPaletteItemFilterInput]
+  or: [ModelPaletteItemFilterInput]
+  not: ModelPaletteItemFilterInput
+}
+
+input CreatePaletteItemInput {
+  id: ID
+  title: String!
+  paletteItemPaletteId: ID!
+  paletteItemYesPaletteId: ID
+  paletteItemNoPaletteId: ID
+}
+
+input UpdatePaletteItemInput {
+  id: ID!
+  title: String
+  paletteItemPaletteId: ID
+  paletteItemYesPaletteId: ID
+  paletteItemNoPaletteId: ID
+}
+
+input DeletePaletteItemInput {
+  id: ID
+}
+
+type ModelLegacyConnection {
+  items: [Legacy]
+  nextToken: String
+}
+
+input ModelLegacyFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  and: [ModelLegacyFilterInput]
+  or: [ModelLegacyFilterInput]
+  not: ModelLegacyFilterInput
+}
+
+input CreateLegacyInput {
+  id: ID
+  title: String!
+  legacyGameId: ID!
+  legacyPlayerId: ID!
+}
+
+input UpdateLegacyInput {
+  id: ID!
+  title: String
+  legacyGameId: ID
+  legacyPlayerId: ID
+}
+
+input DeleteLegacyInput {
+  id: ID
+}
+
+type ModelPeriodConnection {
+  items: [Period]
+  nextToken: String
+}
+
+input ModelPeriodFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  seq: ModelIntFilterInput
+  and: [ModelPeriodFilterInput]
+  or: [ModelPeriodFilterInput]
+  not: ModelPeriodFilterInput
+}
+
+input CreatePeriodInput {
+  id: ID
+  tone: Tone!
+  title: String!
+  seq: Int!
+  periodGameId: ID!
+  periodCreatorId: ID!
+}
+
+input UpdatePeriodInput {
+  id: ID!
+  tone: Tone
+  title: String
+  seq: Int
+  periodGameId: ID
+  periodCreatorId: ID
+}
+
+input DeletePeriodInput {
+  id: ID
+}
+
+type ModelEventConnection {
+  items: [Event]
+  nextToken: String
+}
+
+input ModelEventFilterInput {
+  id: ModelIDFilterInput
+  seq: ModelIntFilterInput
+  title: ModelStringFilterInput
+  and: [ModelEventFilterInput]
+  or: [ModelEventFilterInput]
+  not: ModelEventFilterInput
+}
+
+input CreateEventInput {
+  id: ID
+  tone: Tone!
+  seq: Int!
+  title: String!
+  eventPeriodId: ID!
+  eventCreatorId: ID!
+}
+
+input UpdateEventInput {
+  id: ID!
+  tone: Tone
+  seq: Int
+  title: String
+  eventPeriodId: ID
+  eventCreatorId: ID
+}
+
+input DeleteEventInput {
+  id: ID
+}
+
+type ModelFocusConnection {
+  items: [Focus]
+  nextToken: String
+}
+
+input ModelFocusFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  and: [ModelFocusFilterInput]
+  or: [ModelFocusFilterInput]
+  not: ModelFocusFilterInput
+}
+
+input CreateFocusInput {
+  id: ID
+  title: String!
+  focusFocusedGameId: ID
+  focusGameId: ID!
+}
+
+input UpdateFocusInput {
+  id: ID!
+  title: String
+  focusFocusedGameId: ID
+  focusGameId: ID
+}
+
+input DeleteFocusInput {
+  id: ID
+}
+
+type ModelSceneConnection {
+  items: [Scene]
+  nextToken: String
+}
+
+input ModelSceneFilterInput {
+  id: ModelIDFilterInput
+  seq: ModelIntFilterInput
+  question: ModelStringFilterInput
+  setting: ModelStringFilterInput
+  answer: ModelStringFilterInput
+  and: [ModelSceneFilterInput]
+  or: [ModelSceneFilterInput]
+  not: ModelSceneFilterInput
+}
+
+input CreateSceneInput {
+  id: ID
+  tone: Tone!
+  seq: Int!
+  question: String!
+  setting: String!
+  answer: String!
+  sceneEventId: ID!
+  sceneCreatorId: ID!
+}
+
+input UpdateSceneInput {
+  id: ID!
+  tone: Tone
+  seq: Int
+  question: String
+  setting: String
+  answer: String
+  sceneEventId: ID
+  sceneCreatorId: ID
+}
+
+input DeleteSceneInput {
+  id: ID
+}
